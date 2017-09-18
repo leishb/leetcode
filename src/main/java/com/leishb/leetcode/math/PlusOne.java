@@ -1,7 +1,7 @@
 package com.leishb.leetcode.math;
 
 /**
- * Created by leishengbao on 2017/9/18.
+ * Created by leishb on 2017/9/18.
  */
 public class PlusOne {
 
