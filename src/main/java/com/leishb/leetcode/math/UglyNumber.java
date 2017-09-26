@@ -14,8 +14,10 @@ public class UglyNumber {
 
     @Test
     public void testUglyNum(){
-        Assert.assertTrue(isUglyNum(30));
-        Assert.assertTrue(!isUglyNum(17));
+//        Assert.assertTrue(isUglyNum(30));
+//        Assert.assertTrue(!isUglyNum(17));
+
+        Assert.assertTrue(nthSuperUglyNum(3, new int[]{2,3,5})==3);
     }
 
     /**
@@ -72,13 +74,19 @@ public class UglyNumber {
     }
 
 
+    /**
+     * Accepted
+     * @param n
+     * @param primes
+     * @return
+     */
     public int nthSuperUglyNum(int n, int[] primes){
         int[] indexes = new int[primes.length];
         int[] uglyNums = new int[n];
         uglyNums[0]=1;
-        int k=0;
+        int k=1;
         while (k<n){
-            int min = -1;
+            int min = Integer.MAX_VALUE;
             for (int i =0;i<indexes.length;i++){
                 int index = indexes[i];
                 if (uglyNums[index] * primes[i]<=min){
@@ -88,7 +96,7 @@ public class UglyNumber {
             for (int i =0;i<indexes.length;i++){
                 int index = indexes[i];
                 if (uglyNums[index] * primes[i]==min){
-                    index++;
+                    indexes[i]++;
                 }
             }
             uglyNums[k++]=min;
