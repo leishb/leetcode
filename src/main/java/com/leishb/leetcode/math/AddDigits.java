@@ -6,7 +6,15 @@ package com.leishb.leetcode.math;
 public class AddDigits {
 
 
+    public void test(){
 
+    }
+
+    /**
+     * Accecpted
+     * @param num
+     * @return
+     */
     public int addDigit(int num){
         while (num <=10){
             int sum=0;

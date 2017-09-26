@@ -15,6 +15,11 @@ public class CountDigitOne {
     }
 
 
+    /**
+     * Not Accepted
+     * @param n
+     * @return
+     */
     public int countDigitOne(int n){
         int count = 0;
         int iFactor = 1;
