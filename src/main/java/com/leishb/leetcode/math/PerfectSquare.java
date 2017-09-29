@@ -3,6 +3,9 @@ package com.leishb.leetcode.math;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Created by me on 2017/9/29.
  */
@@ -17,21 +20,25 @@ public class PerfectSquare {
             Assert.assertTrue(isPerfectSquare(sum));
 //            Assert.assertTrue(isPerfectSquare2(sum));
         }
-        Assert.assertTrue(sumOfSquares(5));
-        Assert.assertTrue(sumOfSquares(10));
-        Assert.assertTrue(!sumOfSquares(6));
+        Assert.assertTrue(judgeSumOfSqares2(0));
+        Assert.assertTrue(judgeSumOfSqares2(5));
+        Assert.assertTrue(judgeSumOfSqares2(10));
+        Assert.assertTrue(!judgeSumOfSqares2(6));
+        long start = System.currentTimeMillis();
+        boolean isSq = judgeSumOfSqares2(2147482647);
+        System.out.println("result :"+ isSq + ", time: " + (System.currentTimeMillis()-start));
     }
 
-    public boolean sumOfSquares(int num){
-        if (num==0){
-            return true;
-        }
-        if (isPerfectSquare2(num)){
-            return true;
-        }
-        for (int i=1;i*i<num;i++){
-            int k = num - i*i;
-            if (isPerfectSquare2(k)){
+
+
+    /**
+     * Accepted
+     * @param num
+     * @return
+     */
+    public boolean judgeSumOfSqares(int num){
+        for (int i=0;i<Math.sqrt(num);i++){
+            if ((int)Math.sqrt(num -i*i) == Math.sqrt(num -i*i)){
                 return true;
             }
         }
@@ -39,17 +46,45 @@ public class PerfectSquare {
     }
 
     /**
-     *  1+3+5+7
+     * Accepted
      * @param num
      * @return
      */
-    public boolean isPerfectSquare2(int num){
-        int k=1;
-        while (k*k<num){
-            k++;
+    public boolean judgeSumOfSqares2(int num){
+        int i=0;
+        int j= (int) Math.sqrt(num);
+        while (i<=j){
+            int cur = i*i + j*j;
+            if (num==cur){
+                return true;
+            }else if (num > cur){
+                i++;
+            }else {
+                j--;
+            }
         }
-        return k*k==num;
+        return false;
     }
+
+
+    /**
+     * Accepted
+     * @param num
+     * @return
+     */
+    public boolean sumOfSquares(int num){
+        Set<Integer> squares = new HashSet<Integer>();
+        //i*i<=num && i<=Math.sqrt(num)时间差别较大
+        for (int i=0;i<=Math.sqrt(num);i++){
+            int k = num - i*i;
+            squares.add(i*i);
+            if (squares.contains(k)){
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     /**
      * 二分法
