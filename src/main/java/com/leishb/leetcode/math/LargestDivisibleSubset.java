@@ -1,5 +1,6 @@
 package com.leishb.leetcode.math;
 
+import com.leishb.leetcode.tag.DynamicProgramming;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.List;
 /**
  * Created by me on 2017/10/9.
  */
+@DynamicProgramming
 public class LargestDivisibleSubset {
 
     @Test

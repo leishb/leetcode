@@ -1,11 +1,13 @@
 package com.leishb.leetcode.math;
 
+import com.leishb.leetcode.tag.DynamicProgramming;
 import org.junit.Assert;
 import org.junit.Test;
 
 /**
  * Created by me on 2017/10/10.
  */
+@DynamicProgramming
 public class ArithmeticSlices {
 
     @Test

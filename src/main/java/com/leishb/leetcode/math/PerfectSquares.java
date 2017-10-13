@@ -1,10 +1,12 @@
 package com.leishb.leetcode.math;
 
+import com.leishb.leetcode.tag.DynamicProgramming;
 import org.junit.Test;
 
 /**
  * Created by me on 2017/9/27.
  */
+@DynamicProgramming
 public class PerfectSquares {
 
     @Test
