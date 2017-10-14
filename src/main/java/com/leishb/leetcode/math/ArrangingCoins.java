@@ -1,11 +1,13 @@
 package com.leishb.leetcode.math;
 
+import com.leishb.leetcode.tag.BinarySearch;
 import org.junit.Assert;
 import org.junit.Test;
 
 /**
  * Created by me on 2017/10/12.
  */
+@BinarySearch
 public class ArrangingCoins {
 
 
@@ -17,13 +19,14 @@ public class ArrangingCoins {
     /**
      * Accepted
      * Attention : convert int to long to avoid overflow
+     * 解方程：k*(k+1)/2 < =n && (k+1)*(k+2)/2 >n
      * @param n
      * @return
      */
     public int arrangeCoins(int n) {
         long left = 0;
         long right = n;
-        while(left < right){
+        while(left <= right){
             long mid = (right-left)/2 + left;
             long low = (mid+1)*mid/2;
             long upper = (mid+1)*(mid+2)/2;

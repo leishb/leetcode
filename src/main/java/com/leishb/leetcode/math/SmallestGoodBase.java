@@ -57,6 +57,11 @@ public class SmallestGoodBase {
     }
 
 
+    /**
+     * Accepted
+     * @param n
+     * @return
+     */
     public String smallestGoodBase2(String n) {
         long nn = Long.parseLong(n);
         long result = 0;
