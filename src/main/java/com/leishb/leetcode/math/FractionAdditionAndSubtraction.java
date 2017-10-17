@@ -32,6 +32,13 @@ public class FractionAdditionAndSubtraction {
         Assert.assertTrue(fractionAddition2("5/3+1/3").equals("2/1"));
         Assert.assertTrue(fractionAddition2("5/3").equals("5/3"));
         Assert.assertTrue(fractionAddition2("-7/3").equals("-7/3"));
+
+
+        Assert.assertTrue(fractionAddition3("-1/2+1/2+1/3").equals("1/3"));
+        Assert.assertTrue(fractionAddition3("1/3-1/2").equals("-1/6"));
+        Assert.assertTrue(fractionAddition3("5/3+1/3").equals("2/1"));
+        Assert.assertTrue(fractionAddition3("5/3").equals("5/3"));
+        Assert.assertTrue(fractionAddition3("-7/3").equals("-7/3"));
         Assert.assertTrue(gcd(-7,3)==-1);
     }
 
@@ -143,6 +150,61 @@ public class FractionAdditionAndSubtraction {
         sb.append(isNegative(resultFz ,resultFm) ? "-" : "").append(Math.abs(resultFz/gcd)).append("/").append(Math.abs(resultFm/gcd));
         return sb.toString();
     }
+
+
+    /**
+     * Accepted
+     * @param expression
+     * @return
+     */
+    public String fractionAddition3(String expression) {
+        int sign = 1;
+        //the initial fraction : 0/1
+        int resultFz = 0;
+        int resultFm =1;
+        int fz = 0;
+        int fm = 0;
+        boolean isFm = false;
+        boolean isFz = true;
+
+        for (int i=0;i<expression.length();i++){
+            char c = expression.charAt(i);
+            if (i==0 && c == '-'){
+                sign = -1;
+                continue;
+            }
+            if (isFz && c >='0' && c <='9'){
+                fz = fz * 10 + (c-'0');
+            }
+            else if (c == '/'){
+                isFz = false;
+                isFm = true;
+            }
+            else if (isFm && c >='0' && c <='9'){
+                fm = fm * 10 + (c-'0');
+            }else if (isFm && (c == '+' || c == '-')){ //after this, to parse second fraction
+                resultFz = resultFz * fm + sign * fz * resultFm;
+                resultFm =  resultFm * fm;
+                //convert param to init
+                isFz = true;
+                isFm = false;
+
+                fz = 0;
+                fm = 0;
+                sign = c == '+' ? 1 : -1;
+            }
+            //at end of the expression, add the last fraction
+            if (i==expression.length()-1){
+                resultFz = resultFz * fm + sign* fz * resultFm;
+                resultFm = resultFm * fm;
+            }
+        }
+        StringBuffer sb = new StringBuffer();
+        int gcd = gcd(resultFz, resultFm);
+        sb.append(isNegative(resultFz ,resultFm) ? "-" : "").append(Math.abs(resultFz/gcd)).append("/").append(Math.abs(resultFm/gcd));
+        return sb.toString();
+    }
+
 
     private boolean isNegative(int a, int b){
         return (a>0&&b<0) || (a<0&&b>0);
