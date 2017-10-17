@@ -39,6 +39,13 @@ public class FractionAdditionAndSubtraction {
         Assert.assertTrue(fractionAddition3("5/3+1/3").equals("2/1"));
         Assert.assertTrue(fractionAddition3("5/3").equals("5/3"));
         Assert.assertTrue(fractionAddition3("-7/3").equals("-7/3"));
+
+
+        Assert.assertTrue(fractionAddition4("-1/2+1/2+1/3").equals("1/3"));
+        Assert.assertTrue(fractionAddition4("1/3-1/2").equals("-1/6"));
+        Assert.assertTrue(fractionAddition4("5/3+1/3").equals("2/1"));
+        Assert.assertTrue(fractionAddition4("5/3").equals("5/3"));
+        Assert.assertTrue(fractionAddition4("-7/3").equals("-7/3"));
         Assert.assertTrue(gcd(-7,3)==-1);
     }
 
@@ -205,6 +212,47 @@ public class FractionAdditionAndSubtraction {
         return sb.toString();
     }
 
+
+    public String fractionAddition4(String expression) {
+        List<Integer> signs = new ArrayList<Integer>();
+        for (int i=1;i<expression.length();i++){
+            if (expression.charAt(i)=='+'){
+                signs.add(1);
+            }
+            if (expression.charAt(i)=='-'){
+                signs.add(-1);
+            }
+        }
+        List<Integer> numerators = new ArrayList<Integer>();
+        List<Integer> demorators = new ArrayList<Integer>();
+        int resultFm = 1;
+        int resultFz = 0;
+        for (String s : expression.split("\\+")){
+            for (String num : s.split("\\-")){
+                if (num.length()==0){
+                    continue;
+                }
+                Integer numerator = Integer.parseInt(num.split("/")[0]);
+                Integer demorator = Integer.parseInt(num.split("/")[1]);
+                numerators.add(numerator);
+                demorators.add(demorator);
+                resultFm *= demorator;
+            }
+        }
+        for (int i=0;i<numerators.size();i++){
+            int sign = expression.charAt(0)=='-' ? -1 :1;
+            if (i!=0){
+                sign = signs.get(i-1);
+            }
+            int num = numerators.get(i) * sign;
+            int dem = demorators.get(i);
+            resultFz += num * (resultFm/dem);
+        }
+        StringBuffer sb = new StringBuffer();
+        int gcd = gcd(resultFz, resultFm);
+        sb.append(isNegative(resultFz ,resultFm) ? "-" : "").append(Math.abs(resultFz/gcd)).append("/").append(Math.abs(resultFm/gcd));
+        return sb.toString();
+    }
 
     private boolean isNegative(int a, int b){
         return (a>0&&b<0) || (a<0&&b>0);
