@@ -26,6 +26,13 @@ public class LargestDivisibleSubset {
         System.out.println(largestDivisibleSubsetWithDp(nums2));
         System.out.println(largestDivisibleSubsetWithDp(new int[]{2,3,8,9,27}));
 
+        //largestDivisibleSubset
+        System.out.println(largestDivisibleSubset(nums3));
+        System.out.println(largestDivisibleSubset(nums));
+        System.out.println(largestDivisibleSubset(nums2));
+        System.out.println(largestDivisibleSubset(new int[]{2,3,8,9,27}));
+
+        System.out.println(largestDivisibleSubset(new int[]{1,2,3}));
     }
 
 
@@ -61,6 +68,7 @@ public class LargestDivisibleSubset {
         }
 
         //from nums[maxIndex] to 0, add every element belongs to the largest subset.
+        //注意数组排序的效果体现，nums[i+1] = p * nums[i], nums[i+2]=q * nums[i+1] ==> nums[i+2] = p * q * nums[i]
         int temp = nums[maxIndex];
         int curDp = dp[maxIndex];
         for (int i=maxIndex;i>=0;i--){
@@ -92,7 +100,7 @@ public class LargestDivisibleSubset {
             List<Integer> maxList = new ArrayList<Integer>();
             maxList.add(nums[i]);
             for (int j=0;j<n;j++){
-                if (i!=j && canDivide(maxList, nums[j])){
+                if (i!=j && canDivide2(maxList, nums[j])){
                     maxList.add(nums[j]);
                 }
             }
@@ -112,5 +120,15 @@ public class LargestDivisibleSubset {
             }
         }
         return true;
+    }
+
+
+    private boolean canDivide2(List<Integer> nums, int num){
+        int first = nums.get(0);
+        int last = nums.get(nums.size()-1);
+        if ((num%first==0 || first%num==0) && (num%last==0 || last%num==0)){
+            return true;
+        }
+        return false;
     }
 }
