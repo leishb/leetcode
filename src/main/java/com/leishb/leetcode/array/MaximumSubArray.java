@@ -28,6 +28,7 @@ public class MaximumSubArray {
 
 
     /**
+     * Accepted
      * 逐个遍历数组元素并将其加入累加和（sum），如果累加和大于记录的最大和（maxSum），更新maxSum，
      * 如果sum小于等于0，表明之前的子数组不会提高后续数组的相加和，抛弃之前的子数组，将sum重新置为0
      * @param nums

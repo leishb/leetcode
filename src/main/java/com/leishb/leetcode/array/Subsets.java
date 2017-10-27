@@ -19,7 +19,11 @@ public class Subsets {
         System.out.println(subsets(new int[]{1,2,3,4,5}));
     }
 
-
+    /**
+     * Accepted
+     * @param nums
+     * @return
+     */
     public List<List<Integer>> subsets(int[] nums) {
         List<List<Integer>> ret = new ArrayList<List<Integer>>();
         ret.add(new ArrayList<Integer>());

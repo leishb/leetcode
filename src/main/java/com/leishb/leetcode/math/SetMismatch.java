@@ -224,7 +224,7 @@ public class SetMismatch {
      */
     public int[] findErrorNums7(int[] nums){
         for (int i=0;i<nums.length;i++){
-            while (nums[i]!=nums[nums[i]-1]){
+            while (nums[i]!=nums[nums[i]-1]){// 令j=nums[i]-1, nums[j]=j+1;  循环将nums[i]放到第 nums[i]-1 个位置, 直到nums[i]=i+1 或者  j=nums[i]-1, nums[j]=j+1
                 swap(nums, i, nums[i]-1);
             }
         }

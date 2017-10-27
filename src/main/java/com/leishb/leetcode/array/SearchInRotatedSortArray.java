@@ -27,6 +27,12 @@ public class SearchInRotatedSortArray {
     }
 
 
+    /**
+     * Wrong
+     * @param nums
+     * @param target
+     * @return
+     */
     public int searchInRotateSortArray(int[] nums, int target){
         int left = 0;
         int right = nums.length-1;
