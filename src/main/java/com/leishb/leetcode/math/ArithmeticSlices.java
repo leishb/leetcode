@@ -14,6 +14,11 @@ public class ArithmeticSlices {
     public void test(){
         Assert.assertTrue(numberOfArithmeticSlices(new int[]{1,2,3,4})==3);
         Assert.assertTrue(numberOfArithmeticSlices(new int[]{1,2,3,5,6,7})==2);
+
+        Assert.assertTrue(numberOfArithmeticSlices2(new int[]{1,2,3,4})==3);
+        Assert.assertTrue(numberOfArithmeticSlices2(new int[]{1,2,3,5,6,7})==2);
+        Assert.assertTrue(numberOfArithmeticSlices2(new int[]{1,2,3,4,5})==6);
+        Assert.assertTrue(numberOfArithmeticSlices2(new int[]{1,2,3,4,5,6})==10);
     }
 
 
@@ -46,6 +51,22 @@ public class ArithmeticSlices {
                 preDp[i]=dp[i]-dp[i-1];//contains i and i-1 count
             }else {
                 preDp[i]=0;
+            }
+        }
+        return dp[A.length-1];
+    }
+
+
+    public int numberOfArithmeticSlices2(int[] A) {
+        if (A.length < 3) {
+            return 0;
+        }
+        int[] dp = new int[A.length];
+        for (int i=2;i<A.length;i++){
+            if (A[i]-A[i-1]==A[i-1]-A[i-2]){
+                dp[i] = 2 * dp[i-1] - dp[i-2] +1;
+            }else {
+                dp[i] = dp[i-1];
             }
         }
         return dp[A.length-1];

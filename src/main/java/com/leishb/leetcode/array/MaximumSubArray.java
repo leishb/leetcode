@@ -1,5 +1,6 @@
 package com.leishb.leetcode.array;
 
+import com.leishb.leetcode.tag.DivideAndConquer;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -24,6 +25,14 @@ public class MaximumSubArray {
 
         Assert.assertArrayEquals(maximumSubArray2(new int[]{-2,-1,-4}), new int[]{1,1});
         Assert.assertArrayEquals(maximumSubArray2(new int[]{-2,1,-3,4,-1,2,1,-2}), new int[]{3,6});
+
+
+        Assert.assertArrayEquals(maximumSubArrayWithDv(new int[]{-2,-1,-4}), new int[]{1,1,-1});
+        Assert.assertArrayEquals(maximumSubArrayWithDv(new int[]{-2,1,-3,4,-1,2,1,-2}), new int[]{3,6,6});
+        Assert.assertArrayEquals(maximumSubArrayWithDv(new int[]{-2}), new int[]{0,0,-2});
+
+        Assert.assertTrue(findMaxAverage(new int[]{1,12,-5,-6,50,3},4)==12.75);
+        Assert.assertTrue(findMaxAverage(new int[]{-1},1)==-1);
     }
 
 
@@ -115,5 +124,72 @@ public class MaximumSubArray {
             }
         }
         return new int[]{maxL, maxR};
+    }
+
+    /**
+     * Accepted
+     * <br>https://leetcode.com/problems/maximum-subarray/description/</br>
+     * @param nums
+     * @return
+     */
+    @DivideAndConquer
+    public int[] maximumSubArrayWithDv(int[] nums){
+        return div(nums,0,nums.length-1);
+    }
+
+
+    private int[] div(int[] nums, int left, int right){
+        if (left==right){
+            return new int[]{left, right, nums[left]};
+        }
+        int mid = (right-left)/2 + left;
+        int[] leftRet = div(nums, left, mid);
+        int[] rightRet = div(nums, mid+1, right);
+        int[] midRet = new int[]{mid,mid,Integer.MIN_VALUE};//attention : 左右没设置的情况
+        int sum =0;
+        for (int i=mid;i>=left;i--){
+            sum += nums[i];
+            if (sum > midRet[2]){
+                midRet[2] = sum;
+                midRet[0] = i;
+            }
+        }
+        sum = midRet[2];//attention : 重新设置sum
+        for(int i=mid+1;i<=right;i++){
+            sum += nums[i];
+            if (sum > midRet[2]){
+                midRet[2] = sum;
+                midRet[1] = i;
+            }
+        }
+        if (leftRet[2]>rightRet[2]){
+            if (leftRet[2]>midRet[2]){
+                return leftRet;
+            }else {
+                return midRet;
+            }
+        }else {
+            if (rightRet[2]>midRet[2]){
+                return rightRet;
+            }else {
+                return midRet;
+            }
+        }
+    }
+
+    public double findMaxAverage(int[] nums, int k) {
+        double res = -Double.MAX_VALUE;
+        double[] sums = new double[nums.length+1];
+        for(int i=0;i<nums.length;i++){
+            sums[i+1] = sums[i] + nums[i];
+        }
+        for(int i=0;i<nums.length;i++){
+            int j=i+k-1;
+            if (j>nums.length-1){
+                break;
+            }
+            res = Math.max((sums[j+1]-sums[i])/(double)k, res);
+        }
+        return res;
     }
 }
