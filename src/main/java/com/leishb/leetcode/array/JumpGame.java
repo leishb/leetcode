@@ -22,7 +22,7 @@ public class JumpGame {
         Assert.assertTrue(jump(new int[]{3,2,0,1,1})==2);
         Assert.assertTrue(jump(new int[]{2,3,0,1,4})==2);
         Assert.assertTrue(jump(new int[]{3,4,3,2,5,4,3})==3);
-
+        Assert.assertTrue(jump(new int[]{1,2,0,0,0,0})==0);
 
 
         Assert.assertTrue(jump2(new int[]{2,1,3,4,6})==2);
@@ -111,6 +111,11 @@ public class JumpGame {
     }
 
 
+    /**
+     * Accepted
+     * @param nums
+     * @return
+     */
     public boolean canJump(int[] nums) {
         if (nums.length<2){
             return true;

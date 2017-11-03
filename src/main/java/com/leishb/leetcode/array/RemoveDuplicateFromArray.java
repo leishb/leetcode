@@ -1,12 +1,20 @@
 package com.leishb.leetcode.array;
 
 import com.leishb.leetcode.tag.TwoPointers;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * Created by me on 2017/10/23.
  */
 @TwoPointers
 public class RemoveDuplicateFromArray {
+
+    @Test
+    public void test(){
+        Assert.assertTrue(removeDuplicatesT(new int[]{1,1,1})==2);
+    }
+
 
     /**
      * Accepted
@@ -27,6 +35,32 @@ public class RemoveDuplicateFromArray {
         return count+1;
     }
 
+
+    /**
+     * Accepted
+     * <br>https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/description/</br>
+     * @param nums
+     * @return
+     */
+    public int removeDuplicatesT(int[] nums) {
+        int i=1;
+        int len=1;
+        for(int j=1;j<nums.length;j++){
+            if(nums[j]==nums[j-1]){
+                if(len<2){
+                    nums[i]=nums[j];
+                    len++;
+                    i++;
+                }
+            }
+            if(nums[j]!=nums[j-1]){
+                nums[i]=nums[j];
+                i++;
+                len=1;
+            }
+        }
+        return i;
+    }
 
     /**
      * Accepted
