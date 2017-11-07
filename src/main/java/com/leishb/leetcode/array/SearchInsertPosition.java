@@ -18,6 +18,30 @@ public class SearchInsertPosition {
         Assert.assertTrue(searchInsertPosition(new int[]{1,3,5,6}, 7)==4);
         Assert.assertTrue(searchInsertPosition(new int[]{1,3,5,6}, 0)==0);
         Assert.assertTrue(searchInsertPosition(new int[]{1,3,5}, 1)==0);
+
+
+
+        Assert.assertTrue(searchInsertPosition2(new int[]{1,3,5,6}, 5)==2);
+        Assert.assertTrue(searchInsertPosition2(new int[]{1,3,5,6}, 2)==1);
+        Assert.assertTrue(searchInsertPosition2(new int[]{1,3,5,6}, 7)==4);
+        Assert.assertTrue(searchInsertPosition2(new int[]{1,3,5,6}, 0)==0);
+        Assert.assertTrue(searchInsertPosition2(new int[]{1,3,5}, 1)==0);
+    }
+
+    public int searchInsertPosition2(int[] nums, int k){
+        int low = 0;
+        int high = nums.length-1;
+        while (low<=high){
+            int mid = (low+high)/2;
+            if (nums[mid]==k){
+                return mid;
+            }else if (nums[mid] > k){
+                high=mid-1;
+            }else {
+                low = mid + 1;
+            }
+        }
+        return low;
     }
 
 

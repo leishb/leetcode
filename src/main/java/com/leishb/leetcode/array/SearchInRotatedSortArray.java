@@ -24,73 +24,80 @@ public class SearchInRotatedSortArray {
         Assert.assertTrue(searchInRotateSortArray(new int[]{8}, 8)==0);
         Assert.assertTrue(searchInRotateSortArray(new int[]{2,3,4,5,1}, 1)==4);
         Assert.assertTrue(searchInRotateSortArray(new int[]{5,6,7,8,0,1,2,4}, 1)==5);
+
+
+        Assert.assertTrue(searchInRotateSortArray2(new int[]{5,6,7,8,0,1,1,2,4}, 1));
+        Assert.assertTrue(searchInRotateSortArray2(new int[]{5,6,6,7,8,0,1,1,2,4}, 6));
+        Assert.assertTrue(searchInRotateSortArray2(new int[]{2,2,2,2,4,0,1}, 1));
+        Assert.assertTrue(searchInRotateSortArray2(new int[]{2,2,2,2,4,0,1}, 2));
+        Assert.assertTrue(searchInRotateSortArray2(new int[]{2,2,2,2,4,0,1,1,1}, 1));
+        Assert.assertTrue(!searchInRotateSortArray2(new int[]{5,6,6,7,8,0,1,1,2,4}, 9));
+        Assert.assertTrue(searchInRotateSortArray2(new int[]{1,3,1,1,1}, 3));
     }
 
 
-    public int searchInRotateSortArray2(int[] nums, int target){
-        int index = -1;
-        
-
-
-
-        return 0;
+    /**
+     * Accepted
+     * @param nums
+     * @param target
+     * @return
+     */
+    public boolean searchInRotateSortArray2(int[] nums, int target){
+        if (nums.length==0){
+            return false;
+        }
+        int low =0;
+        int high = nums.length-1;
+        while (low<=high){
+            int mid = (high-low)/2 + low;
+            if (target==nums[mid]){
+                return true;
+            }
+            if (nums[mid] > nums[high]){
+                if (target >= nums[low] && target< nums[mid]){
+                    high = mid;
+                }else {
+                    low=mid+1;
+                }
+            } else if (nums[mid] < nums[high]){
+                if (target > nums[mid] && target<=nums[high]){
+                    low=mid+1;
+                }else {
+                    high=mid;
+                }
+            }else {
+                high--;
+            }
+        }
+        return nums[low]==target;
     }
 
     /**
-     * Wrong
+     * Accepted
      * @param nums
      * @param target
      * @return
      */
     public int searchInRotateSortArray(int[] nums, int target){
-        int left = 0;
-        int right = nums.length-1;
-        int splitIndex = -1;
-        while (left<=right){
-            int mid = (right-left)/2+left;
-            if (nums[mid] > nums[left] && nums[mid] > nums[right]){//5,6,7,8,0,1,2,4 : 7
-                left = mid+1;
-            }else if (mid!=0 && nums[mid] < nums[mid-1]){//5,6,7,8,0,1,2,4 : 0
-                splitIndex = mid;
-                break;
-            }else if (mid != 0 && nums[mid] > nums[mid-1]){ //5,6,7,8,0,1,2,4 : 2
-                right = mid-1;
-                splitIndex = mid;
-            }
-            if (mid==0){
-                if (mid < nums.length-1 && nums[mid] > nums[mid+1]) {//3,1 : 1
-                    splitIndex = mid + 1;
-                    break;
-                }else if (mid == nums.length-1){// len =1
-                    splitIndex = mid;
-                    break;
-                } else {//0,1,2,3,4
-                    right = mid-1;
-                    splitIndex = mid;
-                }
-            }
-        }
-        if (splitIndex==0||splitIndex==-1){
-            left =0;
-            right = nums.length-1;
-        }else {
-            if (nums[splitIndex-1] >= target && nums[0]<=target){//在左侧
-                left = 0;
-                right = splitIndex-1;
-            }else {//在右侧
-                left = splitIndex;
-                right = nums.length-1;
-            }
-        }
-        while (left<=right){
-            int mid = (right-left)/2+left;
-            if (nums[mid] == target){
+        int low =0;
+        int high = nums.length-1;
+        while (low<=high){
+            int mid = (high-low)/2 + low;
+            if (target==nums[mid]){
                 return mid;
             }
-            if (nums[mid] <target){
-                left = mid+1;
-            }else {
-                right = mid-1;
+            if (nums[mid] >= nums[low]){
+                if (target >= nums[low] && target< nums[mid]){
+                    high = mid-1;
+                }else {
+                    low=mid+1;
+                }
+            } else if (nums[mid] < nums[low]) {
+                if (target > nums[mid] && target<=nums[high]){
+                    low=mid+1;
+                }else {
+                    high=mid-1;
+                }
             }
         }
         return -1;
