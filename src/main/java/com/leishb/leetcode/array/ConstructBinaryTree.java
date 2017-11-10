@@ -40,4 +40,33 @@ public class ConstructBinaryTree {
         root.right = buildTree(preorder, inorder, preStart+inIndex-inStart +1, inIndex+1, inEnd);
         return root;
     }
+
+
+    /**
+     * Accepted
+     * @param inorder
+     * @param postorder
+     * @return
+     */
+    public TreeNode buildTree2(int[] inorder, int[] postorder) {
+        return helper(inorder,postorder, 0, inorder.length-1, 0, postorder.length-1);
+    }
+
+
+    private TreeNode helper(int[] inorder, int[] postorder, int inStart, int inEnd, int postStart, int postEnd){
+        if (inStart > inEnd || postStart > postEnd){
+            return null;
+        }
+        TreeNode root = new TreeNode(postorder[postEnd]);
+        int inIndex = 0;
+        for (int i=inStart;i<=inEnd;i++){
+            if (inorder[i]==root.val){
+                inIndex = i;
+                break;
+            }
+        }
+        root.left = helper(inorder, postorder, inStart, inIndex-1, postStart, postStart + inIndex - inStart -1);
+        root.right = helper(inorder, postorder, inIndex+1, inEnd, postStart + inIndex - inStart , postEnd-1);
+        return root;
+    }
 }

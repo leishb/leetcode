@@ -18,6 +18,12 @@ public class MinimumSizeSubarraySum {
 
         Assert.assertTrue(minSubArrayLen2(11, new int[]{1,2,3,4,5})==3);
         Assert.assertTrue(minSubArrayLen2(16, new int[]{1,2,3,4,5})==0);
+        Assert.assertTrue(minSubArrayLen2(5, new int[]{1,2,3,4,5})==1);
+
+
+        Assert.assertTrue(minSubArrayLen3(11, new int[]{1,2,3,4,5})==3);
+        Assert.assertTrue(minSubArrayLen3(16, new int[]{1,2,3,4,5})==0);
+        Assert.assertTrue(minSubArrayLen3(5, new int[]{1,2,3,4,5})==1);
     }
 
 
@@ -93,5 +99,48 @@ public class MinimumSizeSubarraySum {
             }
         }
         return false;
+    }
+
+    public int minSubArrayLen3(int s, int[] nums) {
+        int res = div(nums, 0, nums.length-1, s);
+        return res==Integer.MAX_VALUE ? 0 : res;
+    }
+
+
+    private int div(int[] nums, int start, int end, int s){
+        if (start>end){
+            return Integer.MAX_VALUE;
+        }
+        if (start==end){
+            if (nums[start]>=s){
+                return 1;
+            }
+            return Integer.MAX_VALUE;
+        }
+        int mid=(start+end)/2;
+
+        int left = div(nums, start, mid-1, s);
+        int right = div(nums, mid+1, end, s);
+
+        int mk = Integer.MAX_VALUE;
+        int sum=0;
+        int i=mid;
+        for (i=mid;i>=start;i--){
+            sum += nums[i];
+            if (sum >=s){
+                mk = Math.min(mk, i-mid+1);
+                break;
+            }
+        }
+        i = i<start?start:i;
+        for (int j=mid+1;j<=end;j++){
+            sum += nums[j];
+            while (sum >=s && i<mid){
+                mk = Math.min(mk, j-i+1);
+                sum -= nums[i];
+                i++;
+            }
+        }
+        return Math.min(left ,Math.min(right, mk));
     }
 }

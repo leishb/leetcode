@@ -33,6 +33,15 @@ public class SearchInRotatedSortArray {
         Assert.assertTrue(searchInRotateSortArray2(new int[]{2,2,2,2,4,0,1,1,1}, 1));
         Assert.assertTrue(!searchInRotateSortArray2(new int[]{5,6,6,7,8,0,1,1,2,4}, 9));
         Assert.assertTrue(searchInRotateSortArray2(new int[]{1,3,1,1,1}, 3));
+
+
+        Assert.assertTrue(findMin(new int[]{5,6,7,8,0,1,1,2,4})==0);
+        Assert.assertTrue(findMin(new int[]{5,6,6,7,8,0,1,1,2,4})==0);
+        Assert.assertTrue(findMin(new int[]{2,2,2,2,4,0,1})==0);
+        Assert.assertTrue(findMin(new int[]{2,2,2,2,4,0,1})==0);
+        Assert.assertTrue(findMin(new int[]{2,2,2,2,4,0,1,1,1})==0);
+        Assert.assertTrue(findMin(new int[]{5,6,6,7,8,0,1,1,2,4})==0);
+        Assert.assertTrue(findMin(new int[]{1,3,1,1,1})==1);
     }
 
 
@@ -66,10 +75,39 @@ public class SearchInRotatedSortArray {
                     high=mid;
                 }
             }else {
-                high--;
+                high--;//nums[mid]==nums[high], no idea, but we can eliminate nums[high];
             }
         }
         return nums[low]==target;
+    }
+
+
+    /**
+     * Accepted
+     * <br>https://leetcode.com/problems/find-minimum-in-rotated-sorted-array-ii/description/</br>
+     * @param nums
+     * @return
+     */
+    public int findMin(int[] nums) {
+        if (nums.length==0){
+            return 0;
+        }
+        int low =0;
+        int high = nums.length-1;
+        while (low<=high){
+            int mid = (high-low)/2 + low;
+            if (mid!=0 && nums[mid-1]>nums[mid]){
+                return nums[mid];
+            }
+            if (nums[mid] > nums[high]){
+                low=mid+1;
+            } else if (nums[mid] < nums[high]){
+                high=mid;
+            }else {//When num[mid] == num[hi], we couldn't sure the position of minimum in mid's left or right, so just let upper bound reduce one.
+                high--;//nums[mid]==nums[high], no idea, but we can eliminate nums[high];
+            }
+        }
+        return nums[low];
     }
 
     /**
