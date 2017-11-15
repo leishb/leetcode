@@ -101,6 +101,13 @@ public class MinimumSizeSubarraySum {
         return false;
     }
 
+
+    /**
+     * Wrong
+     * @param s
+     * @param nums
+     * @return
+     */
     public int minSubArrayLen3(int s, int[] nums) {
         int res = div(nums, 0, nums.length-1, s);
         return res==Integer.MAX_VALUE ? 0 : res;
