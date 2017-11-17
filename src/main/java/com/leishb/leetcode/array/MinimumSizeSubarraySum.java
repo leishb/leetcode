@@ -9,6 +9,7 @@ import org.junit.Test;
  * Created by me on 2017/11/6.
  */
 @BinarySearch
+@TwoPointers
 public class MinimumSizeSubarraySum {
 
     @Test
@@ -24,6 +25,7 @@ public class MinimumSizeSubarraySum {
         Assert.assertTrue(minSubArrayLen3(11, new int[]{1,2,3,4,5})==3);
         Assert.assertTrue(minSubArrayLen3(16, new int[]{1,2,3,4,5})==0);
         Assert.assertTrue(minSubArrayLen3(5, new int[]{1,2,3,4,5})==1);
+        Assert.assertTrue(minSubArrayLen3(213, new int[]{12, 28, 83, 4, 25,26,25,2,25,25,25,12})==8);
     }
 
 
@@ -115,9 +117,6 @@ public class MinimumSizeSubarraySum {
 
 
     private int div(int[] nums, int start, int end, int s){
-        if (start>end){
-            return Integer.MAX_VALUE;
-        }
         if (start==end){
             if (nums[start]>=s){
                 return 1;
@@ -125,27 +124,33 @@ public class MinimumSizeSubarraySum {
             return Integer.MAX_VALUE;
         }
         int mid=(start+end)/2;
-
-        int left = div(nums, start, mid-1, s);
+        int left = div(nums, start, mid, s);
         int right = div(nums, mid+1, end, s);
-
         int mk = Integer.MAX_VALUE;
-        int sum=0;
         int i=mid;
-        for (i=mid;i>=start;i--){
-            sum += nums[i];
-            if (sum >=s){
-                mk = Math.min(mk, i-mid+1);
+        int j=mid+1;
+        int sum=nums[i]+nums[j];
+        while (i>=start && j<=end){
+            if (sum>=s){
+                mk = Math.min(mk, j-i+1);
                 break;
             }
-        }
-        i = i<start?start:i;
-        for (int j=mid+1;j<=end;j++){
-            sum += nums[j];
-            while (sum >=s && i<mid){
-                mk = Math.min(mk, j-i+1);
-                sum -= nums[i];
-                i++;
+            if (i==start && j==end){
+                break;
+            }else if (i == start){
+                j++;
+                sum +=nums[j];
+            }else if (j==end){
+                i--;
+                sum += nums[i];
+            }else {
+                if (nums[i-1]>=nums[j+1]){
+                    i--;
+                    sum += nums[i];
+                }else {
+                    j++;
+                    sum += nums[j];
+                }
             }
         }
         return Math.min(left ,Math.min(right, mk));
