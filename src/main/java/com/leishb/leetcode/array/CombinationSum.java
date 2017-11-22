@@ -2,6 +2,8 @@ package com.leishb.leetcode.array;
 
 import com.leishb.leetcode.tag.BackTracking;
 import com.leishb.leetcode.tag.DFS;
+import com.leishb.leetcode.tag.DynamicProgramming;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.*;
@@ -18,6 +20,7 @@ public class CombinationSum {
         long start = System.currentTimeMillis();
         System.out.println(combinatinSum(new int[]{2,3,5,6,7}, 7));
         System.out.println(combinatinSum(new int[]{2,3,4,5,6,7}, 7));
+        System.out.println(combinatinSum(new int[]{3,2,5,4,6,7}, 7));
         System.out.println(combinatinSum(new int[]{1,2,3,4,5,6,7}, 7));
         System.out.println(combinatinSum(new int[]{1}, 1));
         System.out.println(combinatinSum(new int[]{2}, 4));
@@ -41,6 +44,11 @@ public class CombinationSum {
 
 
         System.out.println(combinatinSum3(3,9));
+
+
+        Assert.assertTrue(combinationSum4(new int[]{1,2,3},4)==7);
+        Assert.assertTrue(combinationSum4(new int[]{3,1,2},4)==7);
+        Assert.assertTrue(combinationSum4(new int[]{1,2},3)==3);
     }
 
     /**
@@ -159,5 +167,39 @@ public class CombinationSum {
                 break;
             }
         }
+    }
+
+
+    /**
+     * Accepted
+     * @param nums
+     * @param target
+     * @return
+     */
+    @DynamicProgramming
+    public int combinationSum4(int[] nums, int target) {
+        if (nums.length==0 || target<=0){
+            return 0;
+        }
+        int[] memo = new int[target+1];
+        Arrays.fill(memo, -1);
+        memo[0]=1;
+        return helper(nums, target, memo);
+    }
+
+    private int helper(int[] nums, int target, int[] memo){
+        int count =0;
+        if (target<0){
+            return 0;
+        }
+        if (memo[target]!=-1){
+            return memo[target];
+        }
+        for (int i=0;i<nums.length;i++){
+            int nt = target-nums[i];
+            count += helper(nums, nt, memo);
+        }
+        memo[target]=count;
+        return count;
     }
 }
