@@ -49,6 +49,13 @@ public class CombinationSum {
         Assert.assertTrue(combinationSum4(new int[]{1,2,3},4)==7);
         Assert.assertTrue(combinationSum4(new int[]{3,1,2},4)==7);
         Assert.assertTrue(combinationSum4(new int[]{1,2},3)==3);
+
+
+
+        System.out.println(permutation(new int[]{1,2,3,4}));
+        System.out.println(permuteUnique(new int[]{1,2,3,4}));
+        System.out.println(permuteUnique(new int[]{1,1,2}));
+        System.out.println(permuteUnique(new int[]{3,3,0,3}));
     }
 
     /**
@@ -202,4 +209,90 @@ public class CombinationSum {
         memo[target]=count;
         return count;
     }
+
+
+    /**
+     * Accepted
+     * @param nums
+     * @return
+     */
+    public List<List<Integer>> permutation(int[] nums){
+        List<List<Integer>> ans = new ArrayList<>();
+        backtracking(nums, new ArrayList<>(), ans);
+        return ans;
+    }
+
+
+    private void backtracking(int[] nums, List<Integer> list, List<List<Integer>> ans){
+        if (list.size()==nums.length){
+            ans.add(list);
+            return;
+        }
+        for (int i=0;i<nums.length;i++){
+            List<Integer> copy = new ArrayList<>(list);
+            if (copy.contains(nums[i])){
+                continue;
+            }
+            copy.add(nums[i]);
+            backtracking(nums, copy, ans);
+        }
+
+    }
+
+
+    /**
+     * Accepted
+     * @param nums
+     * @return
+     */
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        Arrays.sort(nums);
+        List<List<Integer>> ans = new ArrayList<>();
+        backtrackingUnique(nums, new ArrayList<>(), ans, new HashSet<>());
+        return ans;
+    }
+
+
+
+    private void backtrackingUnique(int[] nums, List<Integer> list, List<List<Integer>> ans, Set<Integer> set){
+        if (list.size()==nums.length){
+            ans.add(list);
+            return;
+        }
+        for (int i=0;i<nums.length;i++){
+            if (set.contains(i)){
+                continue;
+            }
+            if (i!=0 && nums[i]==nums[i-1] && !set.contains(i-1)){
+                continue;
+            }
+            List<Integer> copy = new ArrayList<>(list);
+            copy.add(nums[i]);
+            set.add(i);
+            backtrackingUnique(nums, copy, ans, set);
+            set.remove(i);
+        }
+    }
+
+
+    private void backtrackingUnique2(int[] nums, List<Integer> list, List<List<Integer>> ans, boolean[] used){
+        if (list.size()==nums.length){
+            ans.add(list);
+            return;
+        }
+        for (int i=0;i<nums.length;i++){
+            if (used[i]){
+                continue;
+            }
+            if (i!=0 && nums[i]==nums[i-1] && !used[i-1]){
+                continue;
+            }
+            List<Integer> copy = new ArrayList<>(list);
+            copy.add(nums[i]);
+            used[i]=true;
+            backtrackingUnique2(nums, copy, ans, used);
+            used[i]=false;
+        }
+    }
+
 }
