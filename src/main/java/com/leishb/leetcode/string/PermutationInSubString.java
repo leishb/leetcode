@@ -1,5 +1,6 @@
 package com.leishb.leetcode.string;
 
+import com.leishb.leetcode.tag.SlidingWindow;
 import com.leishb.leetcode.tag.TwoPointers;
 import org.junit.Assert;
 import org.junit.Test;
@@ -13,6 +14,7 @@ import java.util.Map;
  * Created by me on 2017/11/30.
  */
 @TwoPointers
+@SlidingWindow
 public class PermutationInSubString {
 
 
@@ -27,6 +29,7 @@ public class PermutationInSubString {
         Assert.assertTrue(permutationInString("wzaafaaqwrtbcdeaa", "bcdeaa"));
         Assert.assertFalse(permutationInString("wzaafaabcwwdefg", "bcdeaa"));
         Assert.assertFalse(permutationInString("ooolleoooleh", "hello"));
+        Assert.assertFalse(permutationInString2("ooolleoooleh", "hello"));
     }
 
 
@@ -71,6 +74,40 @@ public class PermutationInSubString {
     }
 
 
+    /**
+     * Accepted
+     * @param s2
+     * @param s1
+     * @return
+     */
+    public boolean permutationInString2(String s2, String s1){
+        Map<Character, Integer> map = new HashMap<>();
+        for (char c : s1.toCharArray()){
+            map.put(c, map.getOrDefault(c, 0)+1);
+        }
+        int start = 0;
+        int end = 0;
+        while (end < s2.length()){
+            if (map.containsKey(s2.charAt(end))  && map.get(s2.charAt(end)) >0){
+                if (!map.containsKey(s2.charAt(start))){//init set start
+                    start = end;
+                }
+                map.put(s2.charAt(end), map.get(s2.charAt(end))-1);
+                end++;
+            }else {
+                while (s2.charAt(start) != s2.charAt(end)){
+                    map.put(s2.charAt(start), map.get(s2.charAt(start))+1);
+                    start++;
+                }
+                start++;
+                end++;
+            }
+            if (end-start==s1.length()){
+                return true;
+            }
+        }
+        return false;
+    }
 
     public List<Integer> findAnagrams(String s, String p) {
         Map<Character, Integer> map = new HashMap();

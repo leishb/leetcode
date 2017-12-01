@@ -1,5 +1,6 @@
 package com.leishb.leetcode.string;
 
+import com.leishb.leetcode.tag.SlidingWindow;
 import com.leishb.leetcode.tag.TwoPointers;
 import org.junit.Assert;
 import org.junit.Test;
@@ -11,6 +12,7 @@ import java.util.Map;
  * Created by me on 2017/11/28.
  */
 @TwoPointers
+@SlidingWindow
 public class MinimumWindowSubstring {
 
     @Test

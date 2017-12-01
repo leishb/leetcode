@@ -1,6 +1,7 @@
 package com.leishb.leetcode.math;
 
 import com.leishb.leetcode.tag.DivideAndConquer;
+import com.leishb.leetcode.tag.SlidingWindow;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -12,6 +13,7 @@ import java.util.Map;
  * Created by me on 2017/10/20.
  */
 @DivideAndConquer
+@SlidingWindow
 public class LongestSubString {
 
     @Test
@@ -26,6 +28,12 @@ public class LongestSubString {
         Assert.assertTrue(longestSubstring3("ababbc",2)==5);
         Assert.assertTrue(longestSubstring3("a",2)==0);
         Assert.assertTrue(longestSubstring3("weitong",2)==0);
+
+        Assert.assertTrue(longestSubstring4("aaabc",3)==3);
+        Assert.assertTrue(longestSubstring4("ababbc",2)==5);
+        Assert.assertTrue(longestSubstring4("a",2)==0);
+        Assert.assertTrue(longestSubstring4("weitong",2)==0);
+        Assert.assertTrue(longestSubstring4("a",1)==1);
     }
 
 
@@ -63,6 +71,58 @@ public class LongestSubString {
             }
         }
         return end-start;
+    }
+
+
+    /**
+     * Accepted
+     * @param s
+     * @param k
+     * @return
+     */
+    public int longestSubstring4(String s, int k) {
+        int max = 0;
+        for (int i=1;i<=26;i++){
+            max = Math.max(max, findLength(s, i, k));
+        }
+        return max;
+    }
+
+
+    private  int findLength(String s, int numUniqTarget, int targetK){
+        int max = 0;
+        int start = 0;
+        int end = 0;
+        int numUniq = 0;
+        int numAtleastK = 0;
+        Map<Character, Integer> map = new HashMap<>();
+        while (end < s.length()){
+            char c = s.charAt(end);
+            int count = map.getOrDefault(c, 0);
+            map.put(c, count+1);
+            if (count==0){
+                numUniq++;
+            }
+            if(count+1==targetK){
+                numAtleastK++;
+            }
+            while (numUniq > numUniqTarget){
+                int leftCount = map.get(s.charAt(start));
+                map.put(s.charAt(start), leftCount-1);
+                if (leftCount==1){
+                    numUniq--;
+                }
+                if (leftCount==targetK){
+                    numAtleastK--;
+                }
+                start++;
+            }
+            if (numUniq == numUniqTarget && numAtleastK == numUniq){
+                max = Math.max(max, end-start+1);
+            }
+            end++;
+        }
+        return max;
     }
 
     /**
