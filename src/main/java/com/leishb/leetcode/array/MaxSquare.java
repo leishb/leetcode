@@ -17,7 +17,11 @@ public class MaxSquare {
     }
 
 
-
+    /**
+     * Accepted
+     * @param matrix
+     * @return
+     */
     public int maximalSquare(char[][] matrix) {
         int[] height = new int[matrix[0].length];
         int max = 0;
@@ -42,18 +46,16 @@ public class MaxSquare {
         int[] right = new int[nums.length];
 
         left[0] = 0;
-        int l = 0;
         for(int i=1;i<nums.length;i++){
-            l = i-1;
+            int l = i-1;
             while(l >=0 && nums[i] <= nums[l]){
                 l = left[l] -1;
             }
             left[i] = l+1;
         }
         right[nums.length-1] = nums.length-1;
-        int r = nums.length-1;
         for(int i=nums.length-2; i>=0; i--){
-            r = i+1;
+            int r = i+1;
             while(r < nums.length && nums[i] <=nums[r]){
                 r = right[r] + 1;
             }
