@@ -66,6 +66,29 @@ public class SwapNodeData {
         return prev;
     }
 
+    public ListNode reverse2(ListNode head){
+        ListNode prev = null;
+        ListNode cur = head;
+        while (cur != null){
+            ListNode next = cur.next;
+            cur.next = prev;
+            prev = cur;
+            cur = next;
+        }
+        return prev;
+    }
+
+
+    public ListNode reverse3(ListNode head){
+        if (head==null || head.next==null){
+            return head;
+        }
+        ListNode next = head.next;
+        ListNode newHead = reverse3(next);
+        next.next = head;
+        return newHead;
+    }
+
 
 
     public boolean detectLoop(ListNode head){

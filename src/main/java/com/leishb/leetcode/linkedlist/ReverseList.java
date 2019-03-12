@@ -13,7 +13,7 @@ public class ReverseList {
         head.next = new ListNode(5);
         head.next.next = new ListNode(6);
         head.next.next.next = new ListNode(7);
-        reverseBetween2(head, 2,3);
+        reverseBetween2(head, 2,4);
     }
 
 
@@ -71,6 +71,13 @@ public class ReverseList {
     }
 
 
+    /**
+     * Accepted
+     * @param head
+     * @param m
+     * @param n
+     * @return
+     */
     public ListNode reverseBetween2(ListNode head, int m, int n) {
         if(head==null || m==n){
             return head;
@@ -87,9 +94,10 @@ public class ReverseList {
         }
         ListNode then = start.next;
         while (count != n){
+            ListNode next = prev.next;
             start.next = then.next;
             prev.next = then;
-            then.next = start;
+            then.next = next;
             then = start.next;
             count++;
         }
