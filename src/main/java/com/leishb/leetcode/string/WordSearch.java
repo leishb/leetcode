@@ -1,8 +1,13 @@
 package com.leishb.leetcode.string;
 
+import com.leishb.leetcode.tag.BackTracking;
+import com.leishb.leetcode.tag.DFS;
+
 /**
  * Created by me on 2019/3/8.
  */
+@DFS
+@BackTracking
 public class WordSearch {
 
     private boolean found = false;
