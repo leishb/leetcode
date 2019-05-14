@@ -8,7 +8,15 @@ public class ListNode {
     int val;
     ListNode next;
 
+    ListNode prev;
+
     ListNode(int x){
         this.val = x;
+    }
+
+
+    @Override
+    public String toString() {
+        return this.val+"->";
     }
 }
