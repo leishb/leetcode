@@ -1,5 +1,7 @@
 package com.leishb.leetcode.linkedlist;
 
+import org.junit.Test;
+
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
@@ -78,5 +80,110 @@ public class MergeKLists {
             node.next = l2;
         }
         return preHead.next;
+    }
+
+
+    /**
+     * Accepted
+     * @param headA
+     * @param headB
+     * @return
+     */
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        if(headA==null || headB==null){
+            return null;
+        }
+        int lenA = 0;
+        ListNode cur = headA;
+        while (cur!=null){
+            lenA++;
+            cur = cur.next;
+        }
+        int lenB = 0;
+        cur = headB;
+        while (cur!=null){
+            lenB++;
+            cur = cur.next;
+        }
+        return getIntersectionNode(headA, headB, lenA, lenB);
+    }
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB, int lenA, int lenB) {
+        if (lenA < lenB){
+            return getIntersectionNode(headB, headA, lenB, lenA);
+        }
+        ListNode cur = headA;
+        while (lenA!=lenB){
+            cur = cur.next;
+            lenA--;
+        }
+        while (cur!=headB){
+            cur = cur.next;
+            headB = headB.next;
+        }
+        return cur;
+    }
+
+    /**
+     * Accepted
+     * @param headA
+     * @param headB
+     * @return
+     */
+    public ListNode getIntersectionNode2(ListNode headA, ListNode headB) {
+        if (headA == null || headB == null) {
+            return null;
+        }
+        ListNode curA =headA;
+        ListNode curB = headB;
+        while (curA != curB){
+            curA = curA==null?headB:curA.next;
+            curB = curB==null?headA:curB.next;
+        }
+        return curA;
+    }
+
+
+    /**
+     * Accepted
+     * @param head
+     * @return
+     */
+    public ListNode oddEvenList(ListNode head) {
+        if (head==null){
+            return null;
+        }
+        int count = 0;
+        ListNode l1 = new ListNode(0);
+        ListNode l2 = new ListNode(0);
+        ListNode next = head.next;
+        ListNode cur = head;
+        while (cur != null){
+            if (count%2==0){
+                l1.next = cur;
+                l1 = l1.next;
+            }else {
+                l2.next = cur;
+                l2 = l2.next;
+            }
+            cur = cur.next;
+            count++;
+        }
+        l1.next = next;
+        l2.next = null;
+        return head;
+    }
+
+
+
+
+    @Test
+    public void test(){
+        ListNode head = new ListNode(1);
+        head.next = new ListNode(2);
+        head.next.next = new ListNode(3);
+        head.next.next.next = new ListNode(4);
+        head.next.next.next.next = new ListNode(5);
+        head.next.next.next.next.next = new ListNode(6);
+        oddEvenList(head);
     }
 }

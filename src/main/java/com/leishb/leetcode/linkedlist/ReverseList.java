@@ -103,4 +103,30 @@ public class ReverseList {
         }
         return dummy.next;
     }
+
+
+    /**
+     * Accepted
+     * @param head
+     * @param val
+     * @return
+     */
+    public ListNode removeElements(ListNode head, int val) {
+        ListNode prev = new ListNode(0);
+        ListNode dummy = prev;
+        ListNode cur = head;
+        prev.next = head;
+        while (cur!=null){
+            ListNode next = cur.next;
+            if (cur.val == val){
+                prev.next = next;
+                cur.next = null;
+                cur = next;
+            }else {
+                prev = cur;
+                cur = next;
+            }
+        }
+        return dummy.next;
+    }
 }
