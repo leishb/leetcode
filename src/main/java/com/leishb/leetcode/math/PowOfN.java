@@ -3,6 +3,9 @@ package com.leishb.leetcode.math;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by me on 2017/9/25.
  */
@@ -16,9 +19,14 @@ public class PowOfN {
         Assert.assertTrue(myPow2(10, -1)==0.1);
         Assert.assertTrue(myPow2(34.00515, 3)==34.00515 * 34.00515 * 34.00515);
         Assert.assertTrue(myPow2(34.00515, -3)==1/myPow2(34.00515, 3));
+        Assert.assertTrue(myPow3(34.00515, -3, new HashMap<>())==1/myPow2(34.00515, 3));
 
         long start = System.currentTimeMillis();
         System.out.println(myPow2(0.00001, 2147483647));
+        System.out.println("cost : " + (System.currentTimeMillis()-start));
+        System.out.println(myPow3(0.00001, 2147483647, new HashMap<>()));
+        System.out.println("cost : " + (System.currentTimeMillis()-start));
+        System.out.println(myPow4(0.00001, 2147483647));
         System.out.println("cost : " + (System.currentTimeMillis()-start));
     }
 
@@ -77,7 +85,43 @@ public class PowOfN {
     }
 
 
+    public double myPow3(double x, int n, Map<Integer, Double> map){
+        if (map.containsKey(n)){
+            return map.get(n);
+        }
+        if (n<0){
+            return 1/myPow3(x, -n, map);
+        }
+        if (n==0){
+            return 1;
+        }
+        if (n==1){
+            return x;
+        }
+        double k = myPow3(x, n/2, map);
+        double result = k*k;
+        if (n%2==1){
+            result *= x;
+        }
+        map.put(n, result);
+        return result;
+    }
 
+
+    public double myPow4(double x, int n){
+        if (n<0){
+            return 1/myPow4(x, -n);
+        }
+        double result = 1.0;
+        while (n>0){
+            if (n%2==1){
+                result *= x;
+            }
+            n>>=1;
+            x *=x;
+        }
+        return result;
+    }
 
     public boolean isPowOfTwo2(int n){
         return (n & (n-1)) == 0;
