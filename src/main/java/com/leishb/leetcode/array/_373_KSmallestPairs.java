@@ -1,5 +1,6 @@
 package com.leishb.leetcode.array;
 
+import com.leishb.leetcode.tag.BinarySearch;
 import org.junit.Test;
 
 import java.util.*;
@@ -7,6 +8,7 @@ import java.util.*;
 /**
  * Created by me on 2019/6/26.
  */
+@BinarySearch
 public class _373_KSmallestPairs {
 
     /**

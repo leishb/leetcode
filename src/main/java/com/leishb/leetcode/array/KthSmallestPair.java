@@ -77,29 +77,26 @@ public class KthSmallestPair {
     }
 
 
+    /**
+     * TLE
+     * @param nums
+     * @param k
+     * @return
+     */
     public int smallestDistancePair2(int[] nums, int k) {
         Arrays.sort(nums);
-        PriorityQueue<Pair> heap = new PriorityQueue<>(nums.length, (Comparator<Pair>) (o1, o2) -> (o1.next-o1.cur)-(o2.next-o2.cur));
+        PriorityQueue<int[]> queue = new PriorityQueue<>((o1, o2)-> Integer.compare(o1[2], o2[2]));
         for (int i=0;i<nums.length-1;i++){
-            heap.offer(new Pair(nums[i], nums[i+1]));
+            queue.offer(new int[]{i, i+1, nums[i=1]-nums[i]});
         }
-        Pair pair = null;
-        for (;k>0;k--){
-            pair = heap.poll();
-            if (pair.next<nums.length-1){
-                heap.offer(new Pair(pair.cur, pair.next+1));
+        int ans = 0;
+        while (k-->0 && !queue.isEmpty()){
+            int[] arr = queue.poll();
+            ans = arr[2];
+            if (arr[1]<nums.length-1){
+                queue.offer(new int[]{arr[0], arr[1]+1, nums[arr[1]+1]-nums[arr[0]]});
             }
         }
-        return nums[pair.next]-nums[pair.cur];
-    }
-
-    class Pair{
-
-        Pair(int cur, int next){
-            this.cur = cur;
-            this.next= next;
-        }
-        int cur;
-        int next;
+        return ans;
     }
 }
