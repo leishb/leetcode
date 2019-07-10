@@ -35,6 +35,9 @@ public class BuyAndSellStock {
 
 
 
+
+        System.out.print(maxProfit10(new int[]{6,1,6,4,3,0,2}));
+
     }
 
 
@@ -296,5 +299,34 @@ public class BuyAndSellStock {
         return profit;
     }
 
-
+    /**
+     * https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/
+     * Accepted
+     * @param prices
+     * @return
+     */
+    public int maxProfit10(int[] prices) {
+        int n = prices.length;
+        if(n==0){
+            return 0;
+        }
+        int[] dp = new int[n];
+        dp[0] = 0;
+        int max = 0;
+        for(int i=1;i<n;i++){
+            dp[i] = 0;
+            for(int j=i-1;j>=0;j--){
+                if(prices[i] > prices[j]){
+                    if(j<=1){
+                        dp[i] = Math.max(dp[i], prices[i]-prices[j]);
+                    }else{
+                        dp[i] = Math.max(dp[i], dp[j-2] + prices[i]-prices[j]);
+                    }
+                }
+                dp[i] = Math.max(max, dp[i]);
+            }
+            max = Math.max(max, dp[i]);
+        }
+        return max;
+    }
 }
