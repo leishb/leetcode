@@ -52,9 +52,40 @@ public class _939_Minimum_Area_Rectangle {
     }
 
 
+    /**
+     * Accepted
+     * @param points
+     * @return
+     */
+    public int minAreaRect2(int[][] points) {
+        Map<Integer, Set<Integer>> map = new HashMap<>();
+        for (int i = 0; i < points.length; i++) {
+            if (!map.containsKey(points[i][0])) {
+                map.put(points[i][0], new HashSet<>());
+            }
+            map.get(points[i][0]).add(points[i][1]);
+        }
+        int minArea = Integer.MAX_VALUE;
+        for (int i=0;i<points.length;i++){
+            for (int j=i+1;j<points.length;j++){
+                int[] p1 = points[i];
+                int[] p2 = points[j];
+                if (p1[0]==p2[0] || p1[1] == p2[1]){
+                    continue;
+                }
+                if (map.get(p1[0]).contains(p2[1]) && map.get(p2[0]).contains(p1[1])){
+                    minArea = Math.min(minArea, Math.abs(p1[0]-p2[0]) * Math.abs(p1[1]-p2[1]));
+                }
+            }
+        }
+        return minArea==Integer.MAX_VALUE?0:minArea;
+    }
     @Test
     public void test(){
         Assert.assertTrue(minAreaRect(new int[][]{{1,1},{1,3},{3,1},{3,3},{2,2}})==4);
         Assert.assertTrue(minAreaRect(new int[][]{{1,1},{1,3},{3,1},{3,3},{4,1},{4,3}})==2);
+
+        Assert.assertTrue(minAreaRect2(new int[][]{{1,1},{1,3},{3,1},{3,3},{2,2}})==4);
+        Assert.assertTrue(minAreaRect2(new int[][]{{1,1},{1,3},{3,1},{3,3},{4,1},{4,3}})==2);
     }
 }
