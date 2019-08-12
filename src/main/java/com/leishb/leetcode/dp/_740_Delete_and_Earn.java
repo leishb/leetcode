@@ -1,4 +1,4 @@
-package com.leishb.leetcode.favorite;
+package com.leishb.leetcode.dp;
 
 import org.junit.Assert;
 import org.junit.Test;
