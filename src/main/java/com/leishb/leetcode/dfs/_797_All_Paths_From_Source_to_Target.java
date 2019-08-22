@@ -9,6 +9,12 @@ import java.util.List;
  */
 public class _797_All_Paths_From_Source_to_Target {
 
+
+    /**
+     * Accepted
+     * @param graph
+     * @return
+     */
     public List<List<Integer>> allPathsSourceTarget(int[][] graph) {
         List<List<Integer>> ans = new ArrayList<>();
         dfs(graph, ans, new ArrayList<>(Arrays.asList(0)), 0, graph.length-1);

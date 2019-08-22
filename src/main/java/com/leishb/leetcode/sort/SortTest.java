@@ -1,4 +1,4 @@
-package com.leishb.leetcode.array;
+package com.leishb.leetcode.sort;
 
 import org.junit.Assert;
 import org.junit.Test;
