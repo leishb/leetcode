@@ -1,4 +1,4 @@
-package com.leishb.leetcode.array;
+package com.leishb.leetcode.stack;
 
 /**
  * Created by me on 2019/7/8.

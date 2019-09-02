@@ -4,9 +4,7 @@ import com.leishb.leetcode.tag.Hash;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by me on 2017/11/13.
@@ -67,6 +65,54 @@ public class LongestConsecutiveSequence {
             }else {
                 cur = nums[i];
             }
+        }
+        return max;
+    }
+
+
+    public int longestConsecutive3(int[] nums) {
+        if (nums.length==0){
+            return 0;
+        }
+        Set<Integer> set = new HashSet<>();
+        for (int num : nums){
+            set.add(num);
+        }
+        int max=1;
+        for (int num : nums){
+            if (!set.contains(num-1)){
+                int cur = num;
+                int len = 0;
+                while (set.contains(cur)){
+                    cur +=1;
+                    len+=1;
+                }
+                max = Math.max(max, len);
+            }
+        }
+        return max;
+    }
+
+
+    public int longestConsecutive4(int[] nums) {
+        Set<Integer> set = new HashSet<>();
+        for (int num : nums){
+            set.add(num);
+        }
+        int max=0;
+        for (int num : nums){
+            int count = 1;
+            int cur = num;
+            while (set.contains(--cur)){
+                count++;
+                set.remove(cur);
+            }
+            cur = num;
+            while (set.contains(++cur)){
+                count++;
+                set.remove(cur);
+            }
+            max = Math.max(count, max);
         }
         return max;
     }
