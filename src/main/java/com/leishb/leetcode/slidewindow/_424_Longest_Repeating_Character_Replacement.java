@@ -1,4 +1,4 @@
-package com.leishb.leetcode.favorite;
+package com.leishb.leetcode.slidewindow;
 
 import org.junit.Assert;
 import org.junit.Test;
