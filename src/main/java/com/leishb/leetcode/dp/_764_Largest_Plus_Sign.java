@@ -137,12 +137,42 @@ public class _764_Largest_Plus_Sign {
     }
 
 
+    public int orderOfLargestPlusSign3(int N, int[][] mines) {
+        Set<Integer> set = new HashSet<>();
+        for (int[] mine :mines){
+            set.add(mine[0]*N+mine[1]);
+        }
+        int[][] left = new int[N][N];
+        int[][] top = new int[N][N];
+        for (int i=0;i<N;i++){
+            for (int j=0;j<N;j++){
+                if (set.contains(i*N+j)){
+                    continue;
+                }
+                top[i][j] = i>0?top[i-1][j]+1:1;
+                left[i][j] = j>0?left[i][j-1]+1:1;
+            }
+        }
+        int len = N%2!=0?N/2+1:N/2;
+        for (int l=len;l>=1;l--){
+            for (int i=l-1;i+l-1<N;i++){
+                for (int j=l-1;j+l-1<N;j++){
+                    if (left[i][j] >=l && top[i][j] >=l && left[i][j+l-1]-left[i][j]==l-1
+                            && top[i+l-1][j]-top[i][j]==l-1){
+                        return l;
+                    }
+                }
+            }
+        }
+        return 0;
+    }
+
     @Test
     public void test(){
-        Assert.assertTrue(orderOfLargestPlusSign2(5, new int[][]{{4,2}})==2);
-        Assert.assertTrue(orderOfLargestPlusSign2(1, new int[][]{{0,0}})==0);
-        Assert.assertTrue(orderOfLargestPlusSign2(2, new int[][]{})==1);
-        Assert.assertTrue(orderOfLargestPlusSign2(3, new int[][]{{0,2},{1,0},{2,0}})==1);
-        Assert.assertTrue(orderOfLargestPlusSign2(2, new int[][]{{0,0},{1,1}})==1);
+        Assert.assertTrue(orderOfLargestPlusSign3(5, new int[][]{{4,2}})==2);
+        Assert.assertTrue(orderOfLargestPlusSign3(1, new int[][]{{0,0}})==0);
+        Assert.assertTrue(orderOfLargestPlusSign3(2, new int[][]{})==1);
+        Assert.assertTrue(orderOfLargestPlusSign3(3, new int[][]{{0,2},{1,0},{2,0}})==1);
+        Assert.assertTrue(orderOfLargestPlusSign3(2, new int[][]{{0,0},{1,1}})==1);
     }
 }
