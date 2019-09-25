@@ -1,5 +1,7 @@
 package com.leishb.leetcode.design;
 
+import java.util.TreeMap;
+
 /**
  * Created by me on 2019/8/6.
  */
@@ -85,5 +87,28 @@ public class _731_My_Calendar_II {
             int minEnd = Math.min(root.end, end);
             return canInsert(root.left, minStart, root.start) && canInsert(root.right, minEnd, end);
         }
+    }
+
+
+
+    TreeMap<Integer, Integer> map = new TreeMap<>();
+
+
+
+    public boolean book2(int start, int end) {
+        map.put(start, map.getOrDefault(start, 0)+1);
+        map.put(end, map.getOrDefault(start, 0)-1);
+
+        int k=0, count =0;
+        for (int v : map.values()){
+            count += v;
+            k = Math.max(k, count);
+            if (k>2) {
+                map.put(start, map.get(start)-1);
+                map.put(end, map.get(end)+1);
+                return false;
+            }
+        }
+        return true;
     }
 }
