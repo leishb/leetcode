@@ -50,4 +50,28 @@ public class _767_Reorganize_String {
         }
         return ans;
     }
+
+
+    public String reorganizeString2(String S) {
+        Map<Character, Integer> freq = new HashMap<>();
+        for (char c : S.toCharArray()){
+            freq.put(c, freq.getOrDefault(c, 0)+1);
+        }
+        Queue<Map.Entry<Character, Integer>> pq = new PriorityQueue<>((e1, e2)->e2.getValue()-e1.getValue());
+        pq.addAll(freq.entrySet());
+        Queue<Map.Entry<Character, Integer>> queue = new LinkedList<>();
+        StringBuffer sb = new StringBuffer();
+        while (!pq.isEmpty()){
+            Map.Entry<Character, Integer> entry = pq.poll();
+            entry.setValue(entry.getValue()-1);
+            queue.offer(entry);
+            sb.append(entry.getKey());
+            if (queue.size()<2){
+                continue;
+            }
+            Map.Entry<Character, Integer> front = queue.poll();
+            if (front.getValue() > 0) pq.offer(front);
+        }
+        return sb.length()==S.length()?sb.toString():"";
+    }
 }

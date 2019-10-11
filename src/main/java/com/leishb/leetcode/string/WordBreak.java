@@ -17,6 +17,7 @@ public class WordBreak {
         System.out.println(wordBreak3("catsanddog", Arrays.asList("cat","cats","and","sand","dog")));
         System.out.println(wordBreak4("catsanddog", Arrays.asList("cat","cats","and","sand","dog")));
         System.out.println(wordBreak5("catsanddog", Arrays.asList("cat","cats","and","sand","dog")));
+        System.out.println(wordBreak6("catsanddog", Arrays.asList("cat","cats","and","sand","dog")));
     }
 
 
@@ -185,13 +186,63 @@ public class WordBreak {
     }
 
     public List<String> wordBreak6(String s, List<String> wordDict) {
-        Set<String> set = new HashSet<>();
-        for (String word : wordDict) {
-            set.add(word);
+        return dfs_(s, wordDict, new HashMap<>());
+    }
+
+
+    private List<String> dfs_(String s, List<String> wordDict, Map<String, List<String>> memo){
+        if (memo.containsKey(s)){
+            return memo.get(s);
         }
-        List<String> result = new ArrayList<>();
+        List<String> ans = new ArrayList<>();
+        if (s.equals("")){
+            ans.add("");
+            return ans;
+        }
+        for (String word : wordDict){
+            if (s.startsWith(word)){
+                List<String> list = dfs_(s.substring(word.length()), wordDict, memo);
+                for (String w : list){
+                    ans.add(word+(w.isEmpty()?"":" ") + w);
+                }
+            }
+        }
+        memo.put(s, ans);
+        return ans;
+    }
 
 
-        return result;
+    public boolean wordBreakI(String s, List<String> wordDict) {
+        return dfs(s, wordDict, new HashMap<>());
+    }
+
+    private boolean dfs(String s, List<String> dict, Map<String, Boolean> memo){
+        if (s.length()==0)return true;
+        if (memo.containsKey(s)) return memo.get(s);
+        for (String word : dict){
+            if (s.startsWith(word)){
+                if (dfs(s.substring(word.length()), dict, memo)){
+                    memo.put(s, true);
+                    return true;
+                }
+            }
+        }
+        memo.put(s, false);
+        return false;
+    }
+
+
+    public boolean wordBreakI2(String s, List<String> wordDict) {
+        boolean[] dp = new boolean[s.length()+1];
+        dp[0] = true;
+        for (int i=1;i<=s.length();i++){
+            for (int j=i-1;j>=0;j--){
+                if (dp[j] && wordDict.contains(s.substring(j, i))){
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+        return dp[s.length()];
     }
 }

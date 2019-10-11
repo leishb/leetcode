@@ -13,9 +13,9 @@ public class DegreeOfArray {
 
     @Test
     public void test(){
-        Assert.assertTrue(findShortestSubArray(new int[]{1, 2, 2, 3, 1})==2);
-        Assert.assertTrue(findShortestSubArray(new int[]{1,2,2,3,1,4,2})==6);
-        Assert.assertTrue(findShortestSubArray(new int[]{1})==1);
+        Assert.assertTrue(findShortestSubArray2(new int[]{1, 2, 2, 3, 1})==2);
+        Assert.assertTrue(findShortestSubArray2(new int[]{1,2,2,3,1,4,2})==6);
+        Assert.assertTrue(findShortestSubArray2(new int[]{1})==1);
     }
 
 
@@ -56,5 +56,25 @@ public class DegreeOfArray {
             }
         }
         return low;
+    }
+
+    public int findShortestSubArray2(int[] nums) {
+        Map<Integer, Integer> freq = new HashMap<>();
+        Map<Integer, Integer> first = new HashMap<>();
+        Map<Integer, Integer> last = new HashMap<>();
+        int degree = 0;
+        for (int i =0;i<nums.length;i++){
+            freq.put(nums[i], freq.getOrDefault(nums[i], 0)+1);
+            first.putIfAbsent(nums[i], i);
+            last.put(nums[i], i);
+            degree = Math.max(freq.get(nums[i]), degree);
+        }
+        int ans = nums.length;
+        for (int k : freq.keySet()){
+            if (freq.get(k)==degree){
+                ans = Math.min(ans, last.get(k)-first.get(k)+1);
+            }
+        }
+        return ans;
     }
 }
