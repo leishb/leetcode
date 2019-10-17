@@ -79,6 +79,31 @@ public class _402_Remove_K_Digits {
         return res.length()==0?"0":res;
     }
 
+    /**
+     *
+     * @param num
+     * @param k
+     * @return
+     */
+    public String removeKdigits3(String num, int k) {
+        int[] nums = new int[num.length()-k];
+        int len = 0;
+        for (int i=0;i<num.length();i++){
+            while (len>0 && num.length()-i > nums.length-len  && nums[len-1] > num.charAt(i)-'0'){
+                len--;
+            }
+            if (len<nums.length){
+                nums[len++] = num.charAt(i)-'0';
+            }
+        }
+        StringBuffer sb = new StringBuffer();
+        int i=0;
+        while (i<nums.length && nums[i]==0) i++;
+        for (;i<nums.length;i++){
+            sb.append(nums[i]);
+        }
+        return sb.length()==0?"0":sb.toString();
+    }
     @Test
     public void test(){
         System.out.println(removeKdigits2("1432219", 3));

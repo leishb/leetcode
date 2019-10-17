@@ -1,4 +1,4 @@
-package com.leishb.leetcode.string;
+package com.leishb.leetcode.stack;
 
 import com.leishb.leetcode.design.NestedInteger;
 import org.junit.Test;

@@ -72,6 +72,41 @@ public class _329_Longest_Increasing_Path_in_a_Matrix {
         return ans;
     }
 
+    public int longestIncreasingPath2(int[][] matrix) {
+        int ans = 0;
+        if(matrix.length==0) return 0;
+        int[][] count = new int[matrix.length][matrix[0].length];
+        for (int i=0;i<matrix.length ;i++ ) {
+            for (int j=0;j<matrix[0].length ;j++ ) {
+                if (count[i][j] == 0) {
+                    ans = Math.max(ans, dfs(matrix, i, j, count));
+                }
+            }
+        }
+        return ans;
+    }
+
+
+    int[][]  dirs = new int[][]{{-1, 0}, {0, -1}, {0, 1}, {1,0}};
+
+    private int dfs(int[][] matrix, int i, int j, int[][] count){
+        int m = matrix.length;
+        int n = matrix[0].length;
+        if (count[i][j] > 0) {
+            return count[i][j];
+        }
+        int max = 1;
+        for (int[] dir : dirs) {
+            int x = i+dir[0];
+            int y = j+dir[1];
+            if (x < 0 || y< 0 || x>=m || y>= n || matrix[i][j] >= matrix[x][y]) {
+                continue;
+            }
+            max = Math.max(max, dfs(matrix, x, y, count)+1);
+        }
+        count[i][j] = max;
+        return max;
+    }
 
     @Test
     public void test(){
