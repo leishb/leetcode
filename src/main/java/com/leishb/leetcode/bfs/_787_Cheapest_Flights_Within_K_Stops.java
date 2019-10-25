@@ -22,9 +22,7 @@ public class _787_Cheapest_Flights_Within_K_Stops {
         Queue<int[]> queue = new LinkedList<>();
         for (int i=0;i<flights.length;i++){
             int s = flights[i][0];
-            if (!graph.containsKey(s)){
-                graph.put(s, new ArrayList<>());
-            }
+            graph.putIfAbsent(s, new ArrayList<>());
             graph.get(s).add(flights[i]);
             if (s==src){
                 queue.offer(new int[]{flights[i][0],flights[i][1],flights[i][2], 0});
@@ -42,8 +40,8 @@ public class _787_Cheapest_Flights_Within_K_Stops {
                 int price = flight[3];
                 if (flight[1]==dst){
                     minPrice = Math.min(minPrice, price+flight[2]);
-                }else if (graph.get(flight[1])!=null){
-                    for (int[] ff : graph.get(flight[1])){
+                }else {
+                    for (int[] ff : graph.getOrDefault(flight[1], new ArrayList<>())){
                         if (price+flight[2]<minPrice){
                             queue.offer(new int[]{ff[0],ff[1],ff[2], flight[2]+price});
                         }
@@ -53,5 +51,41 @@ public class _787_Cheapest_Flights_Within_K_Stops {
             stops++;
         }
         return minPrice==Integer.MAX_VALUE?-1:minPrice;
+    }
+
+
+
+    public int findCheapestPrice2(int n, int[][] flights, int src, int dst, int K) {
+        int[] prices = new int[n];
+        Arrays.fill(prices, Integer.MAX_VALUE);
+        prices[src] = 0;
+        Map<Integer, List<int[]>> graph = new HashMap<>();
+        Queue<int[]> queue = new LinkedList<>();
+        for (int i=0;i<flights.length;i++){
+            int s = flights[i][0];
+            graph.putIfAbsent(s, new ArrayList<>());
+            graph.get(s).add(flights[i]);
+        }
+        queue.offer(new int[]{src, 0});
+        int stops = 0;
+        int ans = Integer.MAX_VALUE;
+        while (!queue.isEmpty()){
+            int size = queue.size();
+            if (stops-1>K)break;
+            while (size-->0){
+                int[] cur = queue.poll();
+                if (cur[0]==dst){
+                    ans = Math.min(ans, cur[1]);
+                }
+                for (int[] next : graph.getOrDefault(cur[0], new ArrayList<>())){
+                    if (next[2]+cur[1] < prices[next[1]]){
+                        prices[next[1]] =next[2]+cur[1];
+                        queue.offer(new int[]{next[1], next[2]+cur[1]});
+                    }
+                }
+            }
+            stops++;
+        }
+        return ans == Integer.MAX_VALUE?-1:ans;
     }
 }

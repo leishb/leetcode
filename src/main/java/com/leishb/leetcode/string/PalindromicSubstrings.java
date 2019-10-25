@@ -34,6 +34,9 @@ public class PalindromicSubstrings {
 
 
         Assert.assertTrue(shortestPalindrome("aacecaaa").equals("aaacecaaa"));
+
+
+        Assert.assertTrue(shortestPalindrome2("adcba").equals("abcdadcba"));
     }
 
 
@@ -163,6 +166,16 @@ public class PalindromicSubstrings {
     }
 
 
+
+    public String shortestPalindrome2(String s) {
+        if (s==null || s.length()==0) return s;
+        String reverse = new StringBuffer(s).reverse().toString();
+        int i = s.length();
+        for (;i>0;i--){
+            if (reverse.endsWith(s.substring(0, i))) break;
+        }
+        return reverse + s.substring(i);
+    }
 
 
 }
