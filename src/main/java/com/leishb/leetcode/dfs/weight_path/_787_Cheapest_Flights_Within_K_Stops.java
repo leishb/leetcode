@@ -1,4 +1,4 @@
-package com.leishb.leetcode.bfs;
+package com.leishb.leetcode.dfs.weight_path;
 
 import java.util.*;
 
@@ -87,5 +87,65 @@ public class _787_Cheapest_Flights_Within_K_Stops {
             stops++;
         }
         return ans == Integer.MAX_VALUE?-1:ans;
+    }
+
+
+
+
+    public int findCheapestPrice3(int n, int[][] flights, int src, int dst, int K) {
+        int[][] prices = new int[n+1][n];
+        for (int i=0;i<=n;i++) {
+            Arrays.fill(prices[i], Integer.MAX_VALUE);
+        }
+        Map<Integer, List<int[]>> graph = new HashMap<>();
+        for (int i=0;i<flights.length;i++){
+            int s = flights[i][0];
+            graph.putIfAbsent(s, new ArrayList<>());
+            graph.get(s).add(flights[i]);
+        }
+        Queue<int[]> queue =  new PriorityQueue<>((a, b)->a[2]-b[2]);
+        queue.offer(new int[]{src, 0, 0});
+        while (!queue.isEmpty()){
+            int[] cur = queue.poll();
+            if (cur[1]-1>K){
+                continue;
+            }
+            if (cur[0] == dst){
+                return cur[2];
+            }
+            for (int[] next : graph.getOrDefault(cur[0], new ArrayList<>())){
+                if (cur[2]+next[2] < prices[cur[1]][next[1]]){
+                    prices[cur[1]][next[1]] = cur[2] + next[2];
+                    queue.offer(new int[]{next[1], cur[1]+1, cur[2] + next[2]});
+                }
+            }
+        }
+        return -1;
+    }
+
+    public int findCheapestPrice4(int n, int[][] flights, int src, int dst, int K) {
+        Map<Integer, Map<Integer, Integer>> graph = new HashMap<>();
+        for (int i=0;i<flights.length;i++){
+            graph.putIfAbsent(flights[i][0], new HashMap<>());
+            graph.get(flights[i][0]).put(flights[i][1], flights[i][2]);
+        }
+        Queue<int[]> queue =  new PriorityQueue<>((a, b)->a[1]-b[1]);
+        queue.offer(new int[]{src, 0, 0});
+        while (!queue.isEmpty()){
+            int[] cur = queue.poll();
+            int start = cur[0];
+            int price = cur[1];
+            int stops = cur[2];
+            if (start==dst){
+                return price;
+            }
+            if (stops> K){
+                continue;
+            }
+            for (int next : graph.getOrDefault(start, new HashMap<>()).keySet()){
+                queue.offer(new int[]{next, price+graph.get(start).get(next), stops+1});
+            }
+        }
+        return -1;
     }
 }

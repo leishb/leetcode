@@ -1,4 +1,4 @@
-package com.leishb.leetcode.dfs;
+package com.leishb.leetcode.dfs.weight_path;
 
 import java.util.Arrays;
 import java.util.LinkedList;
