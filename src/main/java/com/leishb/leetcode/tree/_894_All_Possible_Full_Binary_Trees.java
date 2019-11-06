@@ -93,4 +93,20 @@ public class _894_All_Possible_Full_Binary_Trees {
         memo.put(N, ans);
         return ans;
     }
+
+
+    public int allPossibleFBT(int N, Map<Integer, Integer> memo) {
+        if (N%2==0) return 0;
+        if (memo.containsKey(N)){
+            return memo.get(N);
+        }
+        int ans = 0;
+        for (int i=1;i<N;i+=2){
+            int left = allPossibleFBT(i, memo);
+            int right = allPossibleFBT(N-i-1, memo);
+            ans += left * right;
+        }
+        memo.put(N, ans);
+        return ans;
+    }
 }

@@ -79,7 +79,26 @@ public class _324_Wiggle_Sort_II {
 
     public void wiggleSortI(int[] nums) {
         Arrays.sort(nums);
+        for (int i=1;i<nums.length-1;i+=2){
+            swap(nums, i, i+1);
+        }
+    }
 
+
+    public void wiggleSortI_2(int[] nums) {
+        boolean less = true;
+        for (int i=0;i<nums.length-1;i++){
+            if (less){
+                if (nums[i] > nums[i+1]){
+                    swap(nums, i, i+1);
+                }
+            }else {
+                if (nums[i] < nums[i+1]){
+                    swap(nums, i, i+1);
+                }
+            }
+            less = !less;
+        }
     }
 
     @Test
