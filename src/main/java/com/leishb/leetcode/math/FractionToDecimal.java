@@ -28,7 +28,7 @@ public class FractionToDecimal {
         Assert.assertTrue(fractionToDecimal(500,10).equals("50"));
 
         Assert.assertTrue(fractionToDecimal(-50,8).equals("-6.25"));
-//        Assert.assertTrue(fractionToDecimal(-1,-2147483648).equals("0.2"));
+        Assert.assertTrue(fractionToDecimal3(-1,-2147483648).equals("0.0000000004656612873077392578125"));
     }
 
     /**
@@ -152,5 +152,82 @@ public class FractionToDecimal {
             sign=-1;
         }
         return sign;
+    }
+
+
+    public String fractionToDecimal3(int numerator, int denominator) {
+        boolean sign = sign(numerator, denominator);
+        StringBuffer sb = new StringBuffer();
+        if(sign) sb.append("-");
+        long d1 = Math.abs((long)numerator);
+        long d2 = Math.abs((long)denominator);
+        sb.append(d1/d2);
+        if(d1%d2==0){
+            return sb.toString();
+        }
+        d1%=d2;
+        List<Long> modeList = new ArrayList();
+        List<Long> retList = new ArrayList();
+        int modeIndex = -1;
+        modeList.add(d1);
+        while(true){
+            long mode = (d1*10)%d2;
+            long ret = (d1*10)/d2;
+            for(int i=0;i<modeList.size();i++){
+                if(mode==modeList.get(i)){
+                    modeIndex = i;
+                    break;
+                }
+            }
+            retList.add(ret);
+            if(modeIndex!=-1 || mode ==0){
+                break;
+            }
+            modeList.add(mode);
+            d1 = mode;
+        }
+        sb.append(".");
+        for(int i=0;i<retList.size();i++){
+            if(i==modeIndex){
+                sb.append("(");
+            }
+            sb.append(retList.get(i));
+        }
+        if(modeIndex!=-1)sb.append(")");
+        return sb.toString();
+    }
+
+
+    public String fractionToDecimal4(int numerator, int denominator) {
+        boolean sign = sign(numerator, denominator);
+        StringBuffer sb = new StringBuffer();
+        if(sign) sb.append("-");
+        long d1 = Math.abs((long)numerator);
+        long d2 = Math.abs((long)denominator);
+        sb.append(d1/d2);
+        if(d1%d2==0){
+            return sb.toString();
+        }
+        d1%=d2;
+        Map<Long, Integer> map = new HashMap<>();
+        sb.append(".");
+        map.put(d1, sb.length());
+        while (d1!=0){
+            long mode = (d1*10)%d2;
+            long ret = (d1*10)/d2;
+            sb.append(ret);
+            if (map.containsKey(mode)){
+                sb.insert(map.get(mode), "(");
+                sb.append(")");
+                break;
+            }
+            map.put(mode, sb.length());
+            d1 = mode;
+        }
+        return sb.toString();
+    }
+
+    private boolean sign(int x, int y){
+        return ((x>0&&y<0)||(x<0&&y>0));
     }
 }

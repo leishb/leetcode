@@ -161,6 +161,30 @@ public class _373_KSmallestPairs {
         }
         return count;
     }
+
+
+
+    public List<List<Integer>> kSmallestPairs3(int[] nums1, int[] nums2, int k) {
+        List<List<Integer>> result = new ArrayList<>();
+        Queue<int[]> queue = new PriorityQueue<>((a1, a2)->a2[2]-a1[2]);
+        for (int i = 0;i<nums1.length;i++){
+            for (int j = 0;j<nums2.length;j++){
+                int sum = nums1[i] + nums2[j];
+                if (queue.size()==k && sum >= queue.peek()[2]){
+                    break;
+                }
+                if (queue.size() == k){
+                    queue.poll();
+                }
+                queue.offer(new int[]{nums1[i], nums2[j], sum});
+            }
+        }
+        while (!queue.isEmpty()){
+            int[] cur = queue.poll();
+            result.add(Arrays.asList(cur[0], cur[1]));
+        }
+        return result;
+    }
     @Test
     public void test(){
         System.out.println(kthSmallest2(new int[][]{{1,2},{1,3}}, 2));

@@ -62,6 +62,50 @@ public class _127_Word_Ladder {
     }
 
 
+    /**
+     * Accepted
+     * @param beginWord
+     * @param endWord
+     * @param wordList
+     * @return
+     */
+    public int ladderLength2(String beginWord, String endWord, List<String> wordList) {
+        Map<String, List<String>> graph = new HashMap<>();
+        wordList.add(beginWord);
+        for (int i=0;i<wordList.size();i++){
+            for (int j=i+1;j<wordList.size();j++){
+                if (isNeighbour(wordList.get(i), wordList.get(j))){
+                    graph.putIfAbsent(wordList.get(i), new ArrayList<>());
+                    graph.putIfAbsent(wordList.get(j), new ArrayList<>());
+                    graph.get(wordList.get(i)).add(wordList.get(j));
+                    graph.get(wordList.get(j)).add(wordList.get(i));
+                }
+            }
+        }
+        if (!graph.containsKey(endWord)) return 0;
+        Queue<String> queue = new LinkedList<>();
+        Set<String> set = new HashSet<>();
+        queue.offer(beginWord);
+        set.add(beginWord);
+        int step = 1;
+        while (!queue.isEmpty()){
+            int size = queue.size();
+            while (size-->0){
+                String cur = queue.poll();
+                if (cur.equals(endWord)) return step;
+                for (String next : graph.get(cur)){
+                    if (set.contains(next))continue;
+                    queue.offer(next);
+                    set.add(next);
+                }
+            }
+            step++;
+        }
+        return 0;
+    }
+
+
+
     private boolean isNeighbour(String s1, String s2){
         int count = 0;
         for (int i=0;i<s1.length();i++){
@@ -73,5 +117,44 @@ public class _127_Word_Ladder {
             }
         }
         return true;
+    }
+
+    /**
+     * Accepted
+     * @param beginWord
+     * @param endWord
+     * @param wordList
+     * @return
+     */
+    public int ladderLength3(String beginWord, String endWord, List<String> wordList) {
+        Set<String> dict = new HashSet<>(wordList);
+        Queue<String> queue = new LinkedList<>();
+        Set<String> set = new HashSet<>();
+        queue.offer(beginWord);
+        set.add(beginWord);
+        int step = 1;
+        while (!queue.isEmpty()){
+            int size = queue.size();
+            while (size-->0){
+                String cur = queue.poll();
+                if (cur.equals(endWord)) return step;
+                char[] cs = cur.toCharArray();
+                for(int i=0;i<cs.length;i++){
+                    for(char c = 'a';c<='z';c++){
+                        if (cs[i]==c) continue;
+                        char oldChar = cs[i];
+                        cs[i] = c;
+                        String next = new String(cs);
+                        if (dict.contains(next)){
+                            queue.offer(next);
+                            dict.remove(next);
+                        }
+                        cs[i] = oldChar;
+                    }
+                }
+            }
+            step++;
+        }
+        return 0;
     }
 }

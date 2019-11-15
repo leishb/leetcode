@@ -155,5 +155,6 @@ public class MinHeightTree {
     public void test(){
         System.out.println(findMinHeightTrees2(6, new int[][] {{0, 3}, {1, 3}, {2, 3}, {4, 3}, {5, 4}}));
         System.out.println(findMinHeightTrees3(6, new int[][] {{0, 3}, {1, 3}, {2, 3}, {4, 3}, {5, 4}}));
+        System.out.println(findMinHeightTrees3(3, new int[][] {{0,1},{0,2}}));
     }
 }
