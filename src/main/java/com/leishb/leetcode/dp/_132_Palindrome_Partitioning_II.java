@@ -57,4 +57,30 @@ public class _132_Palindrome_Partitioning_II {
         }
         return cut[s.length()-1];
     }
+
+    public int minCut2(String s) {
+        boolean[][] pld = new boolean[s.length()][s.length()];
+        int[] dp = new int[s.length()];
+        for (int len=1;len<=s.length();len++){
+            for (int i=0;i+len-1<s.length();i++){
+                int j = i+len-1;
+                if (s.charAt(i)==s.charAt(j) && (i==j || i+1==j || pld[i+1][j-1])){
+                    pld[i][j] = true;
+                }
+            }
+        }
+        for (int i=0;i<s.length();i++){
+            dp[i] = i;
+            for (int j=0;j<=i;j++){
+                if (!pld[j][i]) continue;
+                if (j==0){
+                    dp[i] = 0;
+                    break;
+                }else {
+                    dp[i] = Math.min(dp[i], dp[j-1] +1);
+                }
+            }
+        }
+        return dp[s.length()-1];
+    }
 }

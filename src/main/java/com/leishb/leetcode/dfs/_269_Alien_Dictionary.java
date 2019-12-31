@@ -2,10 +2,7 @@ package com.leishb.leetcode.dfs;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by me on 2019/9/24.
@@ -130,9 +127,66 @@ public class _269_Alien_Dictionary {
     }
 
 
+    /**
+     * Accepted
+     * @param words
+     * @return
+     */
+    public String alienOrder3(String[] words) {
+        Map<Character, Set<Character>> graph = new HashMap<>();
+        Map<Character, Integer> inDegree = new HashMap<>();
+        for (String word : words){
+            for (char c : word.toCharArray()){
+                graph.putIfAbsent(c, new HashSet<>());
+                inDegree.putIfAbsent(c, 0);
+            }
+        }
+        boolean order = buildGraph(words, graph, inDegree);
+        if (!order) return "";
+        Queue<Character> queue = new LinkedList<>();
+        for (char c : inDegree.keySet()){
+            if (inDegree.get(c)==0){
+                queue.offer(c);
+            }
+        }
+        StringBuffer sb = new StringBuffer();
+        while (!queue.isEmpty()){
+            char c = queue.poll();
+            sb.append(c);
+            for (char next : graph.get(c)){
+                inDegree.put(next, inDegree.get(next)-1);
+                if (inDegree.get(next)==0){
+                    queue.offer(next);
+                }
+            }
+        }
+        return sb.length()==graph.size()?sb.toString():"";
+    }
+
+
+
+    private boolean buildGraph(String[] words, Map<Character, Set<Character>> graph, Map<Character, Integer> inDegree){
+        for (int i=1;i<words.length;i++){
+            String w1 = words[i-1];
+            String w2 = words[i];
+            int j = 0;
+            while (j<Math.min(w1.length(), w2.length())){
+                if (w1.charAt(j)!=w2.charAt(j)){
+                    if (graph.get(w1.charAt(j)).add(w2.charAt(j))){
+                        inDegree.put(w2.charAt(j), inDegree.get(w2.charAt(j))+1);
+                    }
+                    break;
+                }
+                j++;
+            }
+            if (j==Math.min(w1.length(), w2.length()) && w1.length() > w2.length()) return false;
+        }
+        return true;
+    }
+
     @Test
     public void test(){
-        System.out.println(alienOrder2(new String[]{"za","zb","ca","cb"}));
+        System.out.println(alienOrder3(new String[]{"za","zb","ca","cb"}));
         System.out.println(alienOrder2(new String[]{"bsusz","rhn","gfbrwec","kuw","qvpxbexnhx","gnp","laxutz","qzxccww"}));
         System.out.println(alienOrder2(new String[]{"wrt", "wrf", "er", "ett", "rftt"}));
         System.out.println(alienOrder2(new String[]{"z","x","z"}));

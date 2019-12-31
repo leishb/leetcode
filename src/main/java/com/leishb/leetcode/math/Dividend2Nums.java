@@ -22,7 +22,7 @@ public class Dividend2Nums {
     }
 
 
-    public int dividend(int dividend, int divisor){
+    public int dividend2(int dividend, int divisor){
 
         if (divisor == 1){
             return dividend;
@@ -56,5 +56,45 @@ public class Dividend2Nums {
         }
 
         return sign*result;
+    }
+
+
+    /**
+     * Accepted
+     * @param dividend
+     * @param divisor
+     * @return
+     */
+    public int dividend(int dividend, int divisor) {
+        if (dividend==0) return 0;
+        if (divisor==0) return Integer.MAX_VALUE;
+        if (divisor==1) return dividend;
+        int sign = 1;
+        if ((dividend<0 && divisor>0) || (dividend>0 && divisor<0)){
+            sign = -1;
+        }
+        long ldividend = Math.abs((long)dividend);
+        long ldivisor=  Math.abs((long)divisor);
+        long lans = ldividend(ldividend, ldivisor);
+        if (lans > Integer.MAX_VALUE) {
+            return Integer.MAX_VALUE;
+        }else{
+            return sign * (int) (lans);
+        }
+    }
+
+
+    private long ldividend(long ldividend, long ldivisor){
+        if (ldividend<ldivisor) {
+            return 0;
+        }
+
+        long sum = ldivisor;
+        long multi = 1;
+        while(sum+sum <= ldividend){
+            sum +=sum;
+            multi+=multi;
+        }
+        return multi + ldividend(ldividend-sum, ldivisor);
     }
 }

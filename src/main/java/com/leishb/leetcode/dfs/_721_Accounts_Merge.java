@@ -122,6 +122,110 @@ public class _721_Accounts_Merge {
         parent[rootY] = rootX;
     }
 
+    public List<List<String>> accountsMerge3(List<List<String>> accounts) {
+        Map<String, String> names = new HashMap();
+        Map<String, String> parents = new HashMap();
+        for (List<String> account: accounts) {
+            for (int i=1;i<account.size();i++ ) {
+                parents.put(account.get(i), account.get(i));
+                names.put(account.get(i), account.get(0));
+            }
+        }
+        for (List<String> account: accounts) {
+            for (int i=1;i<account.size();i++ ) {
+                for (int j=i+1;j<account.size() ;j++ ) {
+                    unoin(account.get(i), account.get(j), parents);
+                }
+            }
+        }
+        Map<String, Set<String>> emails = new HashMap();
+        for (String key :parents.keySet()) {
+            String p = find(key, parents);
+            emails.putIfAbsent(p, new HashSet());
+            emails.get(p).add(key);
+        }
+        List<List<String>> res = new ArrayList();
+        for (String k : emails.keySet()) {
+            String name = names.get(k);
+            List<String> list = new ArrayList();
+            list.addAll(emails.get(k));
+            Collections.sort(list);
+            list.add(0, name);
+            res.add(list);
+        }
+        return res;
+    }
+
+
+    public String find(String key, Map<String, String> parents){
+        if (key.equals(parents.get(key))) {
+            return key;
+        }
+        parents.put(key, find(parents.get(key), parents));
+        return parents.get(key);
+    }
+
+
+    private void unoin(String k1, String k2, Map<String, String> parents){
+        String p1 = find(k1, parents);
+        String p2 = find(k2, parents);
+        if (p1.equals(p2)) return;
+        parents.put(p1, p2);
+    }
+
+
+    public List<List<String>> accountsMerge4(List<List<String>> accounts) {
+        Map<String, String> name = new HashMap<>();
+        Map<String, Integer> emailToId = new HashMap<>();
+        int k = 0;
+        UF uf = new UF(10001);
+        for (List<String> account : accounts){
+            for (int i=1;i<account.size();i++){
+                name.put(account.get(i), account.get(0));
+                if (!emailToId.containsKey(account.get(i))){
+                    emailToId.put(account.get(i), k++);
+                }
+                uf.union(emailToId.get(account.get(i)), emailToId.get(account.get(1)));
+            }
+        }
+        Map<Integer, List<String>> map = new HashMap<>();
+        for (String email : name.keySet()){
+            int p = uf.find(emailToId.get(email));
+            map.putIfAbsent(p, new ArrayList<>());
+            map.get(p).add(email);
+        }
+
+        for (List<String> list : map.values()){
+            Collections.sort(list);
+            list.add(0, name.get(list.get(0)));
+        }
+        return new ArrayList<>(map.values());
+    }
+
+
+    class UF {
+        int[] parents;
+
+        public UF(int N){
+            this.parents = new int[N];
+            for (int i=0;i<N ;i++ ) {
+                parents[i] = i;
+            }
+        }
+
+        public int find(int x){
+            if(x==parents[x]) return x;
+            return parents[x] = find(parents[x]);
+        }
+
+        public void union(int x, int y){
+            int rx = find(x);
+            int ry = find(y);
+            if (rx!=ry) {
+                parents[rx] = ry;
+            }
+        }
+    }
 
     @Test
     public void test(){
@@ -130,6 +234,6 @@ public class _721_Accounts_Merge {
         accounts.add(new ArrayList<>(Arrays.asList("John", "johnnybravo@mail.com")));
         accounts.add(new ArrayList<>(Arrays.asList("John", "johnsmith@mail.com", "john_newyork@mail.com")));
         accounts.add(new ArrayList<>(Arrays.asList("Mary", "mary@mail.com")));
-        System.out.println(accountsMerge2(accounts));
+        System.out.println(accountsMerge3(accounts));
     }
 }

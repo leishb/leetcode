@@ -92,6 +92,45 @@ public class _252_Meeting_Rooms {
         return ans;
     }
 
+    public int minMeetingRooms5(int[][] intervals) {
+        Arrays.sort(intervals, (it1, it2)->it1[0]-it2[0]);
+        Queue<Integer> pq = new PriorityQueue<>();
+        for (int i=0;i<intervals.length ;i++ ) {
+            if (!pq.isEmpty() && intervals[i][0] >= pq.peek()) {
+                pq.poll();
+                pq.offer(intervals[i][1]);
+            }else{
+                pq.offer(intervals[i][1]);
+            }
+        }
+        return pq.size();
+    }
+
+
+    public List<List<int[]>> minMeetingRooms6(int[][] intervals){
+        Arrays.sort(intervals, (it1, it2)->it1[0]-it2[0]);
+        Queue<Integer> pq = new PriorityQueue<>((a, b)->intervals[a][1]-intervals[b][1]);
+        Map<Integer, Integer> map = new HashMap();
+        for (int i=0;i<intervals.length ;i++ ) {
+            if (!pq.isEmpty() && intervals[i][0]>=intervals[pq.peek()][1]) {
+                int j = pq.poll();
+                map.put(i, j);
+            }
+            pq.offer(i);
+        }
+        List<List<int[]>> ans = new ArrayList();
+        while(!pq.isEmpty()){
+            List<int[]> list = new ArrayList();
+            int k = pq.poll();
+            list.add(intervals[k]);
+            while(map.containsKey(k)){
+                k = map.get(k);
+                list.add(intervals[k]);
+            }
+            ans.add(list);
+        }
+        return ans;
+    }
 
 
     @Test

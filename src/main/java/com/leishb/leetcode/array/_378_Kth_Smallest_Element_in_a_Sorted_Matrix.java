@@ -1,5 +1,8 @@
 package com.leishb.leetcode.array;
 
+import java.util.PriorityQueue;
+import java.util.Queue;
+
 /**
  * Created by me on 2019/11/13.
  */
@@ -39,5 +42,22 @@ public class _378_Kth_Smallest_Element_in_a_Sorted_Matrix {
             }
         }
         return count;
+    }
+
+
+    public int kthSmallest2(int[][] matrix, int k) {
+        int m = matrix.length, n = matrix[0].length;
+        Queue<int[]> minHeap = new PriorityQueue<>((a, b)->matrix[a[0]][a[1]]-matrix[b[0]][b[1]]);
+
+        for (int i=0;i<m;i++){
+            minHeap.offer(new int[]{i, 0});
+        }
+        while (--k>0){
+            int[] cur = minHeap.poll();
+            if (cur[1]++<n){
+                minHeap.offer(cur);
+            }
+        }
+        return matrix[minHeap.peek()[0]][minHeap.peek()[1]];
     }
 }

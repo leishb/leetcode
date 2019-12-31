@@ -1,5 +1,6 @@
 package com.leishb.leetcode.stack;
 
+import java.util.Arrays;
 import java.util.Stack;
 
 /**
@@ -61,6 +62,30 @@ public class _503_Next_Greater_Element {
                 ans[i] = nums[stack.peek()];
             }
             stack.push(i);
+        }
+        return ans;
+    }
+
+
+    /**
+     * Accepted
+     * @param nums
+     * @return
+     */
+    public int[] nextGreaterElements3(int[] nums) {
+        int[] ans = new int[nums.length];
+        Arrays.fill(ans, -1);
+        Stack<Integer> stack = new Stack<>();
+        for (int i=0;i<nums.length;i++){
+            while (!stack.isEmpty() && nums[stack.peek()]< nums[i]){
+                ans[stack.pop()] = nums[i];
+            }
+            stack.push(i);
+        }
+        for (int i=0;i<nums.length;i++){
+            while (!stack.isEmpty() && nums[i] > nums[stack.peek()]){
+                ans[stack.pop()] = nums[i];
+            }
         }
         return ans;
     }

@@ -22,10 +22,10 @@ public class _955_Delete_Columns_to_Make_Sorted_II {
         }
         for (int i=0;i<A[0].length();i++){
             for (int j=0;j<A.length;j++){
-                ss[j] += A[j].charAt(i);
+                ss[j] += A[j].charAt(i);//add
             }
-            if (!sorted(ss)){
-                for (int j=0;j<A.length;j++){
+            if (!sorted(ss)){//judge
+                for (int j=0;j<A.length;j++){//remove
                     ss[j] = ss[j].substring(0,ss[j].length()-1);
                 }
                 ans++;

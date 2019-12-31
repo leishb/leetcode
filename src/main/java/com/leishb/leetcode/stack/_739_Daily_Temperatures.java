@@ -37,4 +37,23 @@ public class _739_Daily_Temperatures {
         }
         return ans;
     }
+
+
+    /**
+     * Accepted
+     * @param T
+     * @return
+     */
+    public int[] dailyTemperatures3(int[] T) {
+        int[] ans = new int[T.length];
+        Stack<Integer> stack = new Stack<>();
+        for (int i=0;i<T.length;i++){
+            while (!stack.isEmpty() && T[stack.peek()] < T[i]){
+                int j = stack.pop();
+                ans[j] = i-j;
+            }
+            stack.push(i);
+        }
+        return ans;
+    }
 }

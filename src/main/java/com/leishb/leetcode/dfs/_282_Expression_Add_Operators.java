@@ -44,5 +44,8 @@ public class _282_Expression_Add_Operators {
     @Test
     public void test(){
         System.out.println(addOperators("123", 6));
+        System.out.println(10%-6);
+        System.out.println(-10%-6);
+        System.out.println(-10%6);
     }
 }

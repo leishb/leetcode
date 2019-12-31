@@ -2,6 +2,8 @@ package com.leishb.leetcode.array;
 
 import org.junit.Test;
 
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.TreeMap;
 
 /**
@@ -56,6 +58,30 @@ public class _239_Sliding_Window_Maximum {
                 }
             }
             ans[i-k+1] = max;
+        }
+        return ans;
+    }
+
+
+    /**
+     * Accepted
+     * @param nums
+     * @param k
+     * @return
+     */
+    public int[] maxSlidingWindow3(int[] nums, int k) {
+        if (nums.length==0) return new int[0];
+        int[] ans = new int[nums.length-k+1];
+        Deque<Integer> dq = new LinkedList<>();
+        for (int i=0;i<nums.length;i++){
+            while (!dq.isEmpty() && nums[i] > nums[dq.getLast()]){
+                dq.removeLast();
+            }
+            dq.addLast(i);
+            if (i-k>=0 && dq.getFirst() == i-k){
+                dq.removeFirst();
+            }
+            if (i-k+1>=0) ans[i-k+1] = nums[dq.getFirst()];
         }
         return ans;
     }

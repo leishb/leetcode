@@ -1,11 +1,13 @@
 package com.leishb.leetcode.dp;
 
+import com.leishb.leetcode.tag.BinarySearch;
 import org.junit.Assert;
 import org.junit.Test;
 
 /**
  * Created by me on 2019/11/4.
  */
+@BinarySearch
 public class _410_Split_Array_Largest_Sum {
 
 
