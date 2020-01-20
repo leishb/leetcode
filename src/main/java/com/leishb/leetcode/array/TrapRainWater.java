@@ -84,4 +84,25 @@ public class TrapRainWater {
         }
         return ans;
     }
+
+
+    public int trap3(int[] height) {
+        int n = height.length;
+        if(n==0)return 0;
+        int left = 0, right = n-1;
+        int leftMax = 0, rightMax = 0;
+        int res = 0;
+        while(left < right){
+            leftMax = Math.max(leftMax, height[left]);
+            rightMax = Math.max(rightMax, height[right]);
+            if (leftMax < rightMax) {
+                res += Math.max(0, leftMax-height[left]);
+                left++;
+            }else{
+                res += Math.max(0, rightMax-height[right]);
+                right--;
+            }
+        }
+        return res;
+    }
 }

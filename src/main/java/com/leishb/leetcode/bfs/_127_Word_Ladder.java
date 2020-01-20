@@ -157,4 +157,54 @@ public class _127_Word_Ladder {
         }
         return 0;
     }
+
+
+
+    /**
+     * Accepted
+     * @param beginWord
+     * @param endWord
+     * @param wordList
+     * @return
+     */
+    public int ladderLength4(String beginWord, String endWord, List<String> wordList) {
+        Set<String> set = new HashSet(wordList);
+        if(!set.contains(endWord)) return 0;
+        Set<String> beginSet = new HashSet();
+        Set<String> endSet = new HashSet();
+        beginSet.add(beginWord);
+        endSet.add(endWord);
+        set.remove(beginWord);
+        int len = 1;
+        while(!beginSet.isEmpty() && !endSet.isEmpty()){
+            if (beginSet.size() > endSet.size()) {
+                Set<String> temp = beginSet;
+                beginSet = endSet;
+                endSet = temp;
+            }
+            Set<String> temp = new HashSet();
+            for (String word : beginSet) {
+                char[] cs = word.toCharArray();
+                for (int i=0;i<cs.length ;i++ ) {
+                    char tempChar = cs[i];
+                    for (char c='a';c<='z' ;c++ ) {
+                        if (c==tempChar) continue;
+                        cs[i] = c;
+                        String s = new String(cs);
+                        if (endSet.contains(s)) {
+                            return len+1;
+                        }
+                        if (set.contains(s)) {
+                            set.remove(s);
+                            temp.add(s);
+                        }
+                        cs[i] = tempChar;
+                    }
+                }
+            }
+            len++;
+            beginSet = temp;
+        }
+        return 0;
+    }
 }

@@ -4,6 +4,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.TreeMap;
 
 /**
@@ -41,6 +43,24 @@ public class _1094_Car_Pooling {
         for (int k : map.keySet()){
             capacity-=map.get(k);
             if (capacity<0)return false;
+        }
+        return true;
+    }
+
+
+    public boolean carPooling3(int[][] trips, int capacity) {
+        Arrays.sort(trips, (t1, t2)->t1[1]-t2[1]);
+        Queue<Integer> pq = new PriorityQueue<>((a, b)->trips[a][2]-trips[b][2]);
+        int persons = 0;
+        for (int i=0;i<trips.length ;i++ ) {
+            while (!pq.isEmpty() && trips[i][1]>=trips[pq.peek()][2]) {
+                persons -= trips[pq.poll()][0];
+            }
+            persons+=trips[i][0];
+            pq.offer(i);
+            if (persons > capacity) {
+                return false;
+            }
         }
         return true;
     }

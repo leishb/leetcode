@@ -5,12 +5,12 @@ package com.leishb.leetcode.linkedlist;
  */
 public class ListNode {
 
-    int val;
-    ListNode next;
+    public int val;
+    public ListNode next;
 
-    ListNode prev;
+    public ListNode prev;
 
-    ListNode(int x){
+    public ListNode(int x){
         this.val = x;
     }
 

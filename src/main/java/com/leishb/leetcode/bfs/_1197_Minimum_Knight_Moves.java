@@ -42,6 +42,37 @@ public class _1197_Minimum_Knight_Moves {
     }
 
 
+    public int minKnightMoves2(int x, int y) {
+        x = Math.abs(x);
+        y = Math.abs(y);
+        Queue<int[]> queue = new LinkedList();
+        queue.offer(new int[]{0, 0});
+        Set<String> set = new HashSet();
+        set.add(0 + "," + 0);
+        int steps = 0;
+        while(!queue.isEmpty()){
+            int size = queue.size();
+            while(size-->0){
+                int[] cur = queue.poll();
+                if (cur[0]==x && cur[1]==y) {
+                    return steps;
+                }
+                for (int[] dir : dirs) {
+                    int nx = cur[0] + dir[0];
+                    int ny = cur[1] + dir[1];
+                    if(nx < -2 || ny < -2 || nx > x+2
+                            || ny > y+2 || set.contains(nx+","+ny)){
+                        continue;
+                    }
+                    set.add(nx+","+ny);
+                    queue.offer(new int[]{nx, ny});
+                }
+            }
+            steps++;
+        }
+        return -1;
+    }
+
     @Test
     public void test(){
         minKnightMoves(2,1);

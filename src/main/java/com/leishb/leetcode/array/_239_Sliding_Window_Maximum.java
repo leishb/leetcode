@@ -2,9 +2,7 @@ package com.leishb.leetcode.array;
 
 import org.junit.Test;
 
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * Created by me on 2019/10/14.
@@ -84,6 +82,22 @@ public class _239_Sliding_Window_Maximum {
             if (i-k+1>=0) ans[i-k+1] = nums[dq.getFirst()];
         }
         return ans;
+    }
+
+    public int[] maxSlidingWindow4(int[] nums, int k) {
+        Queue<Integer> queue = new PriorityQueue<>((a,b)->nums[b]-nums[a]);
+        int[] res = new int[nums.length-k+1];
+        for (int i=0;i<k;i++){
+            queue.offer(i);
+        }
+        int j = 0;
+        res[j++] = nums[queue.peek()];
+        for (int i=k;i<nums.length;i++){
+            queue.remove(i-k);
+            queue.offer(i);
+            res[j++] = nums[queue.peek()];
+        }
+        return res;
     }
     @Test
     public void test(){

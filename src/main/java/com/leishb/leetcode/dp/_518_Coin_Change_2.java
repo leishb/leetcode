@@ -92,7 +92,7 @@ public class _518_Coin_Change_2 {
 
     @Test
     public void test(){
-        Assert.assertTrue(change3(5, new int[]{1,2,5})==4);
+        Assert.assertTrue(change2(5, new int[]{1,2,5})==4);
         Assert.assertTrue(change3(5, new int[]{})==0);
         Assert.assertTrue(change3(0, new int[]{})==1);
         Assert.assertTrue(change2(4, new int[]{1,3})==2);

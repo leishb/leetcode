@@ -1,5 +1,6 @@
 package com.leishb.leetcode.array;
 
+import java.util.Collections;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
@@ -33,9 +34,9 @@ public class _295_Find_Median_from_Data_Stream {
 
     public double findMedian() {
         if ((left.size()+right.size())%2==0){
-            return (double)(left.poll()+right.poll())/2.0;
+            return (double)(left.peek()+right.peek())/2.0;
         }else {
-            return right.poll();
+            return right.peek();
         }
     }
 }
