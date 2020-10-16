@@ -1,4 +1,4 @@
-package com.iqiyi.pay.config.test.arg;
+package com.leishb.leetcode.finwick;
 
 public class FinwickTree {
     int[] sum;

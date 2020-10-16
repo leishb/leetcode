@@ -1,4 +1,4 @@
-package com.iqiyi.pay.cashier.httpTest;
+package com.leishb.contest;
 
 import org.junit.Test;
 

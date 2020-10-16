@@ -1,6 +1,4 @@
-package com.iqiyi.pay.config.test.arg;
-
-import org.junit.Test;
+package com.leishb.leetcode.finwick;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,55 +37,6 @@ public class CountSmaller {
         Collections.reverse(ans);
         return ans;
     }
-
-
-    //1 ,3 , 2, 3, 1
-    //1 ,1 ,2, 3, 3
-    public int reversePairs(int[] nums) {
-        if (nums.length==0) return 0;
-        int[] copy = new int[nums.length];
-        for (int i=0;i<nums.length;i++){
-            copy[i] = nums[i];
-        }
-        Arrays.sort(copy);
-        Map<Integer, Integer> map = new HashMap<>();
-        int j = 0;
-        for (int i=0;i<nums.length;i++){
-            if (i==0||copy[i] != copy[i-1]){
-                map.put(copy[i], j++);
-            }
-        }
-        int ans = 0;
-        SegmentTree root = buildTree(new int[j], 0, j - 1);
-        for (int i=nums.length-1;i>=0;i--){
-            int index = search(copy, nums[i]);
-            System.out.println(index);
-            if (index != -1){
-                int r = map.get(copy[index]);
-                ans += querySum(root, 0, r);
-            }
-            update(root, map.get(nums[i])  , 1);
-        }
-        return ans;
-    }
-
-
-    private int search(int[] nums, int k){
-        int i = 0, j = nums.length-1, ans = -1;
-        while (i<=j){
-            int m = (i + j) / 2;
-            long p = nums[m];
-            if (p * 2 >= k){
-                j = m - 1;
-            }else {
-                ans = m;
-                i = m + 1;
-            }
-        }
-        return ans;
-    }
-
-
 
     class SegmentTree{
         SegmentTree left;
@@ -141,73 +90,4 @@ public class CountSmaller {
         root.sum = root.left.sum + root.right.sum;
     }
 
-
-    private void reverse(int[] arr){
-        int i = 0, j = arr.length - 1;
-        while (i<=j){
-            int temp = arr[j];
-            arr[j] = arr[i];
-            arr[i] = temp;
-            i++;
-            j--;
-        }
-    }
-
-
-    public int reversePairs2(int[] nums) {
-        if (nums.length==0) return 0;
-        int[] copy = new int[nums.length];
-        for (int i=0;i<nums.length;i++){
-            copy[i] = nums[i];
-        }
-        Arrays.sort(copy);
-        int ans = 0;
-        FinwickTree tree = new FinwickTree(nums.length);
-        for (int i=nums.length-1;i>=0;i--){
-            int index = search(copy, nums[i]);
-            if (index != -1){
-                ans += tree.prefixSum(index + 1);
-            }
-            tree.update(Arrays.binarySearch(copy, nums[i]) + 1, 1);
-        }
-        return ans;
-    }
-
-
-    class FinwickTree{
-
-        int[] sums;
-
-        FinwickTree(int n){
-            sums = new int[n+1];
-        }
-
-        public void update(int i, int delta){
-            while (i<sums.length){
-                sums[i] += delta;
-                i += lowbit(i);
-            }
-        }
-
-        public int prefixSum(int i){
-            int ans = 0;
-            while (i>0){
-                ans += sums[i];
-                i -= lowbit(i);
-            }
-            return ans;
-        }
-
-        private int lowbit(int i){
-            return i&(-i);
-        }
-    }
-
-
-    @Test
-    public void test(){
-        System.out.println(reversePairs2(new int[]{6, 2, 1}));
-//        System.out.println(search(new int[]{1, 2, 6}, 2));
-
-    }
 }

@@ -1,4 +1,4 @@
-package com.iqiyi.pay.config.test.arg;
+package com.leishb.leetcode.finwick;
 
 
 import org.junit.Assert;
@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 public class MinNumWithKSwap {
 
@@ -260,13 +261,59 @@ public class MinNumWithKSwap {
         return true;
     }
 
+
+    public String minInteger3(String num, int k) {
+        int n = num.length();
+        List<Integer>[] digits = new List[10];
+        for (int i = 0; i < 10; i++) {
+            digits[i] = new ArrayList<>();
+        }
+        for (int i = 0; i < num.length(); i++) {
+            digits[num.charAt(i) - '0'].add(i);
+        }
+        int[] pointers = new int[10];
+        boolean[] used = new boolean[n];
+        TreeSet<Integer> set = new TreeSet<>();
+        StringBuffer sb = new StringBuffer();
+        int i = 0;
+        while (i < n){
+            if (used[i]) {
+                i++;
+                continue;
+            }
+            int cur = num.charAt(i) - '0';
+            boolean found = false;
+            for (int j = 0; j < cur ; j++){
+                while (pointers[j] < digits[j].size() && digits[j].get(pointers[j]) < i) {
+                    pointers[j]++;
+                }
+                if (pointers[j] == digits[j].size()) continue;
+                int index = digits[j].get(pointers[j]);
+                int swapped = set.subSet(i, false, index, false).size();
+                if (index - i - swapped <= k){
+                    k -= (index - i - swapped);
+                    sb.append(num.charAt(index));
+                    pointers[j]++;
+                    used[index] = true;
+                    set.add(index);
+                    found = true;
+                    break;
+                }
+            }
+            if (!found){
+                sb.append(num.charAt(i));
+                i++;
+            }
+        }
+        return sb.toString();
+    }
     @Test
     public void test(){
 //        System.out.println(minNum("7124", 3));
 //        System.out.println(minInteger("7124", 3));
-        System.out.println(minInteger("4321", 4));
-        System.out.println(minInteger("9438957234785635408", 23));
-        Assert.assertTrue(longestConsecutive(new int[]{100, 4,200,3,1,2}) == 4);
+        System.out.println(minInteger3("4321", 4));
+//        System.out.println(minInteger("9438957234785635408", 23));
+//        Assert.assertTrue(longestConsecutive(new int[]{100, 4,200,3,1,2}) == 4);
     }
 
 }
